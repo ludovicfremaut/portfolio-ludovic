@@ -55,7 +55,7 @@ export function ProjectCard({ title, tech, desc, preview, isDark = true }) {
               key={t}
               className={`text-[9px] font-semibold px-2 py-0.5 rounded border ${
                 ACCENT_TAGS.includes(t)
-                  ? "bg-purple-900/40 text-purple-300 border-purple-500/40"
+                  ? "bg-cyan-600 text-white border-purple-500/40"
                   : isDark 
                     ? "bg-slate-800/50 text-slate-300 border-slate-600/50"
                     : "bg-slate-100 text-slate-600 border-slate-300"
