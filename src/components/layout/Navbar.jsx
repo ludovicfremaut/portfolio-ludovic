@@ -15,6 +15,7 @@
 
 import { NAV_LINKS } from "../../data/constants";
 import { SunIcon, MoonIcon } from "../../assets/icons";
+import cvPdf from "../../assets/docs/CV-Fremaut-Ludovic.pdf";
 
 /**
  * Barre de navigation responsive
@@ -43,20 +44,40 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
 
         {/* Liens desktop - centrés */}
         <div className="hidden md:flex items-center gap-6">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              onClick={() => onNavClick(link)}
-              className={`text-xs font-medium tracking-[0.15em] transition-colors ${
-                activeLink === link
-                  ? isDark ? "text-white" : "text-slate-900"
-                  : isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
-              }`}
-            >
-              [{link}]
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            // Le lien CV ouvre le PDF dans un nouvel onglet
+            if (link === "CV") {
+              return (
+                <a
+                  key={link}
+                  href={cvPdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-xs font-medium tracking-[0.15em] transition-colors ${
+                    isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
+                  }`}
+                >
+                  [{link}]
+                </a>
+              );
+            }
+            
+            // Autres liens : smooth scroll
+            return (
+              <a
+                key={link}
+                href={`#${link.toLowerCase()}`}
+                onClick={() => onNavClick(link)}
+                className={`text-xs font-medium tracking-[0.15em] transition-colors ${
+                  activeLink === link
+                    ? isDark ? "text-white" : "text-slate-900"
+                    : isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                [{link}]
+              </a>
+            );
+          })}
         </div>
 
         {/* Bouton burger mobile */}
@@ -93,20 +114,40 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
             ? "bg-[#0d0d14] border-white/5" 
             : "bg-white border-slate-200"
         }`}>
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
-              onClick={() => onNavClick(link)}
-              className={`text-sm font-medium tracking-widest ${
-                activeLink === link 
-                  ? isDark ? "text-white" : "text-slate-900"
-                  : "text-slate-500"
-              }`}
-            >
-              [{link}]
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            // Le lien CV ouvre le PDF dans un nouvel onglet
+            if (link === "CV") {
+              return (
+                <a
+                  key={link}
+                  href={cvPdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`text-sm font-medium tracking-widest ${
+                    isDark ? "text-slate-500" : "text-slate-500"
+                  }`}
+                >
+                  [{link}]
+                </a>
+              );
+            }
+            
+            // Autres liens : smooth scroll
+            return (
+              <a
+                key={link}
+                href={`#${link.toLowerCase()}`}
+                onClick={() => onNavClick(link)}
+                className={`text-sm font-medium tracking-widest ${
+                  activeLink === link 
+                    ? isDark ? "text-white" : "text-slate-900"
+                    : "text-slate-500"
+                }`}
+              >
+                [{link}]
+              </a>
+            );
+          })}
         </div>
       )}
     </nav>

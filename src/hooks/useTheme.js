@@ -11,13 +11,13 @@ import { useState, useEffect } from "react";
  * @returns {{ isDark: boolean, toggleTheme: function }}
  */
 export function useTheme() {
-  // Initialiser avec le thème sauvegardé ou dark par défaut
+  // Initialiser avec le thème sauvegardé ou light par défaut
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
-      return saved ? saved === "dark" : true; // Dark par défaut
+      return saved ? saved === "dark" : false; // Light par défaut
     }
-    return true;
+    return false;
   });
 
   // Appliquer le thème sur le document
