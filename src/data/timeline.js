@@ -44,16 +44,16 @@ export const TIMELINE_LEFT = [
 export const TIMELINE_RIGHT = [
   {
     // Point 1 : Apprentissage Markdown
-    icons: [{ icon: MarkdownIcon, color: "text-slate-700 dark:text-slate-300" }],
+    icons: [{ icon: MarkdownIcon, color: "text-slate-700 dark:text-slate-300", name: "Markdown" }],
     label: "DÉCOUVERTE",
     borderColor: "border-slate-500/50",
   },
   {
     // Point 2 : Bases du web
     icons: [
-      { icon: Html5Icon, color: "text-orange-500" },
-      { icon: Css3Icon, color: "text-blue-500" },
-      { icon: JsIcon, color: "text-yellow-500" },
+      { icon: Html5Icon, color: "text-orange-500", name: "HTML" },
+      { icon: Css3Icon, color: "text-blue-500", name: "CSS" },
+      { icon: JsIcon, color: "text-yellow-500", name: "JavaScript" },
     ],
     label: "FONDATIONS",
     borderColor: "border-yellow-500/50",
@@ -61,13 +61,13 @@ export const TIMELINE_RIGHT = [
   {
     // Point 3 : Technologies modernes
     icons: [
-      { icon: ReactIcon, color: "text-cyan-500" },
-      { icon: NextJsIcon, color: "text-slate-700 dark:text-white" },
-      { icon: NodeJsIcon, color: "text-green-500" },
-      { icon: TailwindIcon, color: "text-cyan-400" },
-      { icon: DockerIcon, color: "text-blue-400" },
-      { icon: GitHubIcon, color: "text-slate-700 dark:text-slate-300" },
-      { icon: DatabaseIcon, color: "text-orange-400" },
+      { icon: ReactIcon, color: "text-cyan-500", name: "React" },
+      { icon: NextJsIcon, color: "text-slate-700 dark:text-white", name: "Next.js" },
+      { icon: NodeJsIcon, color: "text-green-500", name: "Node.js" },
+      { icon: TailwindIcon, color: "text-cyan-400", name: "Tailwind" },
+      { icon: DockerIcon, color: "text-blue-400", name: "Docker" },
+      { icon: GitHubIcon, color: "text-slate-700 dark:text-slate-300", name: "GitHub" },
+      { icon: DatabaseIcon, color: "text-orange-400", name: "SQL" },
     ],
     label: "STACK MODERNE",
     borderColor: "border-cyan-500/50",

@@ -10,7 +10,61 @@
  * Affiche le parcours de l'industrie vers le développement web.
  */
 
+import { useState } from "react";
 import { TIMELINE_LEFT, TIMELINE_RIGHT, ABOUT_CONTENT } from "../../data/timeline";
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// COMPOSANT UTILITAIRE POUR UN GROUPE D'ICÔNES AVEC TOOLTIP
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Groupe d'icônes avec tooltip unique au-dessus du groupe entier.
+ * Au hover sur une icône, son nom apparaît en haut du conteneur.
+ */
+function IconGroup({ icons, bgCard, borderColor, isDark }) {
+  const [hoveredName, setHoveredName] = useState(null);
+  const iconCount = icons.length;
+
+  // Rendu d'une seule icône (avec hover)
+  const renderIcon = (iconData, i, size = "small") => {
+    const Icon = iconData.icon;
+    const isLarge = size === "large";
+    return (
+      <div
+        key={i}
+        onMouseEnter={() => setHoveredName(iconData.name)}
+        onMouseLeave={() => setHoveredName(null)}
+        className={`${isLarge ? 'w-12 h-12 rounded-xl' : 'w-7 h-7 rounded-md'} ${bgCard} border ${borderColor} flex items-center justify-center ${iconData.color} shadow-sm transition-transform hover:scale-110 cursor-default`}
+      >
+        <Icon className={isLarge ? "w-5 h-5" : "w-3.5 h-3.5"} />
+      </div>
+    );
+  };
+
+  return (
+    <div className="relative flex items-end justify-center">
+      {/* Tooltip au-dessus du groupe entier */}
+      <span className={`absolute -top-6 left-1/2 -translate-x-1/2 text-[9px] font-semibold tracking-wide whitespace-nowrap px-2 py-0.5 rounded z-30 transition-opacity pointer-events-none ${
+        isDark ? 'bg-white/10 text-white' : 'bg-slate-800 text-white'
+      } ${hoveredName ? 'opacity-100' : 'opacity-0'}`}>
+        {hoveredName}
+      </span>
+
+      {/* Icônes */}
+      {iconCount === 1 ? (
+        renderIcon(icons[0], 0, "large")
+      ) : iconCount <= 3 ? (
+        <div className="flex gap-1 justify-center items-end">
+          {icons.map((iconData, i) => renderIcon(iconData, i))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-1 justify-items-center">
+          {icons.map((iconData, i) => renderIcon(iconData, i))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /**
  * Section About avec timeline responsive
@@ -99,48 +153,17 @@ function DesktopTimeline({ isDark }) {
             <div className="flex justify-around pl-8">
               {TIMELINE_RIGHT.map((item, index) => {
                 const borderColor = item.borderColor || borderDefault;
-                const iconCount = item.icons.length;
                 
                 return (
                   <div key={index} className="flex flex-col items-center">
-                    {/* Container icônes avec hauteur fixe, aligné en bas */}
+                    {/* Container icônes avec tooltip au-dessus du groupe */}
                     <div className="h-16 flex items-end justify-center">
-                      {iconCount === 1 ? (
-                        <div className={`w-12 h-12 rounded-xl ${bgCard} border ${borderColor} flex items-center justify-center ${item.icons[0].color} shadow-sm`}>
-                          {(() => {
-                            const Icon = item.icons[0].icon;
-                            return <Icon className="w-5 h-5" />;
-                          })()}
-                        </div>
-                      ) : iconCount <= 3 ? (
-                        <div className="flex gap-1 justify-center items-end">
-                          {item.icons.map((iconData, i) => {
-                            const Icon = iconData.icon;
-                            return (
-                              <div 
-                                key={i}
-                                className={`w-7 h-7 rounded-md ${bgCard} border ${borderColor} flex items-center justify-center ${iconData.color} shadow-sm`}
-                              >
-                                <Icon className="w-3.5 h-3.5" />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-3 gap-1 justify-items-center">
-                          {item.icons.map((iconData, i) => {
-                            const Icon = iconData.icon;
-                            return (
-                              <div 
-                                key={i}
-                                className={`w-7 h-7 rounded-md ${bgCard} border ${borderColor} flex items-center justify-center ${iconData.color} shadow-sm`}
-                              >
-                                <Icon className="w-3.5 h-3.5" />
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
+                      <IconGroup
+                        icons={item.icons}
+                        bgCard={bgCard}
+                        borderColor={borderColor}
+                        isDark={isDark}
+                      />
                     </div>
                     {/* Espace fixe */}
                     <div className="h-2" />

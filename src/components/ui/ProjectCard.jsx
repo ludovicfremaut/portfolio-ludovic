@@ -1,32 +1,31 @@
 /**
  * @file components/ui/ProjectCard.jsx
- * @description Carte de projet avec image de prévisualisation et tags.
- * Utilisée dans la section Projects pour afficher chaque projet.
+ * @description Carte de projet en 2 versions :
+ * - ProjectCard : version compacte (grille)
+ * - ProjectCardExpanded : version détaillée (overlay au hover desktop)
+ * 
  * Supporte light/dark mode.
- * 
- * Props:
- * - title: Nom du projet
- * - tech: Tableau de technologies/tags
- * - desc: Description du projet
- * - preview: URL de l'image de prévisualisation
- * - isDark: État du thème
- * 
- * Features:
- * - Hover effect avec scale et shadow
- * - Tags avec style spécial pour certains mots-clés
  */
 
 import { ACCENT_TAGS } from "../../data/projects";
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// VERSION COMPACTE - affichée dans la grille
+// ═══════════════════════════════════════════════════════════════════════════════
+
 /**
- * Carte de présentation d'un projet
+ * Carte compacte dans la grille
  */
-export function ProjectCard({ title, tech, desc, preview, isDark = true }) {
+export function ProjectCard({ title, tech, desc, preview, isDark = true, isActive = false }) {
   return (
-    <div className={`rounded-xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 group ${
-      isDark 
-        ? "bg-[#14141c] border-slate-700/50 hover:border-slate-600 hover:shadow-xl hover:shadow-cyan-500/50" 
-        : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-300/50"
+    <div className={`rounded-xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 group cursor-pointer ${
+      isActive
+        ? isDark
+          ? "bg-[#14141c] border-cyan-500/50 shadow-lg shadow-cyan-500/10 opacity-100 scale-105!"
+          : "bg-white border-violet-400 shadow-lg shadow-violet-200/50 opacity-100 scale-105!"
+        : isDark 
+          ? "bg-[#14141c] border-slate-700/50 hover:border-slate-600 hover:shadow-xl hover:shadow-cyan-500/10" 
+          : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-xl hover:shadow-slate-300/50"
     }`}>
       {/* Image de prévisualisation */}
       <div className="h-32 overflow-hidden relative">
@@ -48,7 +47,7 @@ export function ProjectCard({ title, tech, desc, preview, isDark = true }) {
           {title}
         </h3>
         
-        {/* Tags technologies */}
+        {/* Tags technologies (version courte) */}
         <div className="flex flex-wrap gap-1.5 mb-3">
           {tech.map((t) => (
             <span
@@ -66,10 +65,76 @@ export function ProjectCard({ title, tech, desc, preview, isDark = true }) {
           ))}
         </div>
         
-        {/* Description */}
+        {/* Description courte */}
         <p className={`text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
           {desc}
         </p>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// VERSION EXPANDÉE - affichée en overlay au hover (desktop)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Carte expandée avec description détaillée et tous les tags
+ */
+export function ProjectCardExpanded({ title, tags, longDesc, preview, isDark = true }) {
+  return (
+    <div
+      className={`rounded-2xl overflow-hidden border-2 shadow-2xl animate-card-expand ${
+        isDark 
+          ? "bg-[#14141c] border-cyan-500/30 shadow-cyan-500/20" 
+          : "bg-white border-violet-300 shadow-violet-200/50"
+      }`}
+    >
+      <div className="flex min-h-56">
+        {/* Image à gauche - hauteur adaptée au contenu */}
+        <div className="w-2/5 relative overflow-hidden shrink-0">
+          <img
+            src={preview}
+            alt={title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className={`absolute inset-0 ${
+            isDark
+              ? "bg-linear-to-r from-transparent to-[#14141c]/80"
+              : "bg-linear-to-r from-transparent to-white/80"
+          }`} />
+        </div>
+
+        {/* Contenu détaillé à droite */}
+        <div className="w-3/5 px-8 py-7 flex flex-col justify-center">
+          {/* Titre */}
+          <h3 className={`font-bold text-xl mb-4 ${isDark ? "text-white" : "text-slate-800"}`}>
+            {title}
+          </h3>
+
+          {/* Tags détaillés */}
+          <div className="flex flex-wrap gap-2 mb-5">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${
+                  ACCENT_TAGS.includes(tag)
+                    ? "bg-cyan-600 text-white border-cyan-500/40"
+                    : isDark
+                      ? "bg-slate-800/80 text-cyan-300 border-cyan-500/30"
+                      : "bg-violet-50 text-violet-700 border-violet-300/60"
+                }`}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Description détaillée */}
+          <p className={`text-sm leading-relaxed ${isDark ? "text-slate-300" : "text-slate-600"}`}>
+            {longDesc}
+          </p>
+        </div>
       </div>
     </div>
   );
