@@ -29,9 +29,12 @@ export function Projects({ isDark = true }) {
         </h2>
         
         {/* Grille de projets - toujours interactive */}
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 transition-all duration-300 ${
-          hoveredIndex !== null ? "md:opacity-40" : ""
-        }`}>
+        <div
+          className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 transition-all duration-300 ${
+            hoveredIndex !== null ? "md:opacity-40" : ""
+          }`}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
           {PROJECTS.map((project, index) => (
             <div
               key={project.title}
