@@ -14,10 +14,10 @@ import { useState } from "react";
 
 /**
  * Hook pour gérer la navigation du portfolio
- * @param {string} initialLink - Lien actif initial (default: "HOME")
+ * @param {string} initialLink - Lien actif initial (default: "ACCUEIL")
  * @returns {Object} État et fonctions de navigation
  */
-export function useNavigation(initialLink = "HOME") {
+export function useNavigation(initialLink = "ACCUEIL") {
   const [activeLink, setActiveLink] = useState(initialLink);
   const [menuOpen, setMenuOpen] = useState(false);
 

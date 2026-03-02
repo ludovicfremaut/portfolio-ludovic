@@ -17,7 +17,7 @@ export function Hero({ isDark = true }) {
   const bgColor = isDark ? "#0d0d14" : "#f1f5f9";
   
   return (
-    <section id="home" className="relative h-150 flex">
+    <section id="accueil" className="relative h-150 flex">
       {/* Partie gauche - 1/2 */}
       <div className="relative w-1/2 overflow-hidden">
         <div
@@ -71,7 +71,7 @@ export function Hero({ isDark = true }) {
               
               {/* CTA */}
               <a
-                href="#projects"
+                href="#projets"
                 className={`inline-block font-semibold px-6 py-3 rounded-lg text-sm tracking-wider transition-all duration-200 hover:shadow-xl ${
                   isDark 
                     ? "bg-[#2a2a3a] hover:bg-[#3a3a4a] text-white border border-slate-600/50 hover:border-slate-500 hover:shadow-cyan-500/50" 

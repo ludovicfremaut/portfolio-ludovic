@@ -8,7 +8,13 @@
 // NAVIGATION
 
 /** Liens de la navbar */
-export const NAV_LINKS = ["HOME", "ABOUT", "PROJECTS", "CONTACT", "CV"];
+export const NAV_LINKS = [
+  { label: "ACCUEIL", id: "accueil" },
+  { label: "À PROPOS", id: "a-propos" },
+  { label: "PROJETS", id: "projets" },
+  { label: "CONTACT", id: "contact" },
+  { label: "CV", id: "cv" },
+];
 
 // IMAGES
 

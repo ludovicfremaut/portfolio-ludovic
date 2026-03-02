@@ -46,10 +46,10 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
         <div className="hidden md:flex items-center gap-6">
           {NAV_LINKS.map((link) => {
             // Le lien CV ouvre le PDF dans un nouvel onglet
-            if (link === "CV") {
+            if (link.id === "cv") {
               return (
                 <a
-                  key={link}
+                  key={link.id}
                   href={cvPdf}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -57,7 +57,7 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
                     isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
                   }`}
                 >
-                  [{link}]
+                  [{link.label}]
                 </a>
               );
             }
@@ -65,16 +65,16 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
             // Autres liens : smooth scroll
             return (
               <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                onClick={() => onNavClick(link)}
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={() => onNavClick(link.label)}
                 className={`text-xs font-medium tracking-[0.15em] transition-colors ${
-                  activeLink === link
+                  activeLink === link.label
                     ? isDark ? "text-white" : "text-slate-900"
                     : isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
                 }`}
               >
-                [{link}]
+                [{link.label}]
               </a>
             );
           })}
@@ -116,10 +116,10 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
         }`}>
           {NAV_LINKS.map((link) => {
             // Le lien CV ouvre le PDF dans un nouvel onglet
-            if (link === "CV") {
+            if (link.id === "cv") {
               return (
                 <a
-                  key={link}
+                  key={link.id}
                   href={cvPdf}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -127,7 +127,7 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
                     isDark ? "text-slate-500" : "text-slate-500"
                   }`}
                 >
-                  [{link}]
+                  [{link.label}]
                 </a>
               );
             }
@@ -135,16 +135,16 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
             // Autres liens : smooth scroll
             return (
               <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
-                onClick={() => onNavClick(link)}
+                key={link.id}
+                href={`#${link.id}`}
+                onClick={() => onNavClick(link.label)}
                 className={`text-sm font-medium tracking-widest ${
-                  activeLink === link 
+                  activeLink === link.label 
                     ? isDark ? "text-white" : "text-slate-900"
                     : "text-slate-500"
                 }`}
               >
-                [{link}]
+                [{link.label}]
               </a>
             );
           })}

@@ -18,14 +18,14 @@ export function Projects({ isDark = true }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
-    <section id="projects" className={`py-20 px-6 transition-colors duration-300 ${
+    <section id="projets" className={`py-20 px-6 transition-colors duration-300 ${
       isDark ? "bg-transparent" : "bg-slate-100"
     }`}>
       <div className="max-w-5xl mx-auto">
         <h2 className={`text-center text-2xl font-bold uppercase tracking-[0.3em] mb-12 ${
           isDark ? "text-white" : "text-slate-800"
         }`}>
-          Projects
+          Projets
         </h2>
         
         {/* Grille de projets - toujours interactive */}
