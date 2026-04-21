@@ -41,3 +41,30 @@ export const PERSONAL_INFO = {
   location: "Marcelcave, Hauts-de-France",
   year: 2025,
 };
+
+// MENTIONS LÉGALES & RGPD
+
+/** Informations légales (LCEN + RGPD) affichées dans la modale du footer */
+export const LEGAL_INFO = {
+  siteUrl: "https://ludovic-dev.com",
+  contactEmail: "contact@ludovic-dev.com",
+  editor: {
+    name: "Ludovic Fremaut",
+    location: "Marcelcave, Hauts-de-France, France",
+    director: "Ludovic Fremaut",
+  },
+  host: {
+    name: "Cloudflare, Inc.",
+    address: "101 Townsend Street, San Francisco, CA 94107, USA",
+    website: "https://www.cloudflare.com",
+  },
+  privacy: {
+    dataCollected: "Nom, adresse email et contenu du message saisis via le formulaire de contact.",
+    purpose: "Répondre à votre demande de contact.",
+    legalBasis: "Consentement explicite lors de l'envoi du formulaire (art. 6.1.a du RGPD).",
+    retention: "3 ans à compter du dernier échange, puis suppression automatique.",
+    recipients: "Aucune donnée n'est transmise à des tiers. Seul l'éditeur y a accès.",
+    rights: "Conformément aux articles 15 à 22 du RGPD, vous disposez d'un droit d'accès, de rectification, de suppression, de portabilité, de limitation et d'opposition sur vos données.",
+    cnil: "En cas de litige, vous pouvez saisir la CNIL (www.cnil.fr).",
+  },
+};

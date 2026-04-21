@@ -6,3 +6,4 @@
 
 export { TimelineIcon } from "./TimelineIcon";
 export { ProjectCard } from "./ProjectCard";
+export { LegalNoticeModal } from "./LegalNoticeModal";

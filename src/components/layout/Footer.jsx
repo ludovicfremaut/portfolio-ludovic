@@ -5,13 +5,17 @@
  * Supporte light/dark mode.
  */
 
+import { useState } from "react";
 import { LinkedInIcon, GitHubIcon, StarIcon } from "../../assets/icons";
 import { SOCIAL_LINKS, PERSONAL_INFO } from "../../data/constants";
+import { LegalNoticeModal } from "../ui/LegalNoticeModal";
 
 /**
- * Footer avec liens sociaux et copyright
+ * Footer avec liens sociaux, copyright et mentions légales
  */
 export function Footer({ isDark = true }) {
+  const [legalOpen, setLegalOpen] = useState(false);
+
   return (
     <footer className={`border-t py-10 text-center transition-colors duration-300 ${
       isDark 
@@ -53,6 +57,23 @@ export function Footer({ isDark = true }) {
       <p className={`text-xs tracking-wider ${isDark ? "text-white" : "text-slate-700"}`}>
         © {PERSONAL_INFO.year} {PERSONAL_INFO.name} — {PERSONAL_INFO.location}.
       </p>
+
+      {/* Lien vers mentions légales & confidentialité */}
+      <button
+        type="button"
+        onClick={() => setLegalOpen(true)}
+        className={`mt-3 text-xs underline underline-offset-4 transition-colors ${
+          isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-800"
+        }`}
+      >
+        Mentions légales & Confidentialité
+      </button>
+
+      <LegalNoticeModal
+        open={legalOpen}
+        onClose={() => setLegalOpen(false)}
+        isDark={isDark}
+      />
     </footer>
   );
 }
