@@ -6,6 +6,8 @@
  * - tech: Technologies utilisées (tableau de tags)
  * - desc: Description courte
  * - preview: URL de l'image de prévisualisation
+ * - url: (optionnel) Lien externe vers le projet en ligne
+ * - previewPosition: (optionnel) Position CSS object-position pour la preview (ex: "top")
  * 
  * Les tags "spéciaux" comme "Sortie Imminente" sont stylisés différemment.
  */
@@ -15,6 +17,24 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const PROJECTS = [
+  {
+    title: "Nicolas Lefebvre Immobilier",
+    tech: ["HTML5", "CSS3", "Mobile First", "Client"],
+    tags: ["HTML5", "CSS3", "Mobile First", "Responsive", "Landing Page", "QR Code", "SEO local"],
+    desc: "Landing page mobile d'un agent immobilier, accès via QR code.",
+    longDesc: "Site vitrine one-page pour Nicolas Lefebvre, conseiller immobilier indépendant dans les Hauts-de-France (REFLEX EN S'HOME). Développé en HTML/CSS pur sans framework, avec une approche mobile-first puisque la majorité du trafic arrive depuis un QR code distribué sur supports physiques (cartes de visite, flyers, vitrines). Mise en avant des services (estimation, vente, recherche de bien), présentation du conseiller et contact WhatsApp intégré. Design sobre aligné sur l'identité de la marque.",
+    preview: "/projects/nicolas-immo.png",
+    previewPosition: "top",
+    url: "https://nicolaslefebvre-immo-hauts-de-france.fr",
+  },
+  {
+    title: "GoSportNow",
+    tech: ["Mobile", "Géolocalisation", "Micro-services", "Sortie Imminente"],
+    tags: ["React Native", "Node.js", "Micro-services", "Géolocalisation", "Docker", "API REST"],
+    desc: "Plateforme de réservation d'activités sportives.",
+    longDesc: "Plateforme de réservation d'activités sportives en toute sécurité. Architecture micro-services avec géolocalisation en temps réel, système de réservation, paiement sécurisé et notifications push. Application mobile React Native connectée à un backend Node.js conteneurisé avec Docker.",
+    preview: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
   {
     title: "Stage 97Pass",
     tech: ["React", "Supabase", "Agile", "Dashboard"],
@@ -30,14 +50,6 @@ export const PROJECTS = [
     desc: "Application d'échange de services entre particuliers.",
     longDesc: "Projet de fin d'études — Application d'échange de services entre particuliers réalisée en mode Agile. Architecture MVC complète avec authentification JWT, gestion des profils, système de matching et messagerie intégrée. Backend Node.js/Express avec base de données MongoDB et déploiement Docker.",
     preview: "https://media.istockphoto.com/id/1249140513/fr/photo/idée-parfaite.jpg?s=612x612&w=is&k=20&c=vSbGw2V3MsdtlfQS1VGrTbSF8Ezj5UJD6GVaIuwUBhY=",
-  },
-  {
-    title: "GoSportNow",
-    tech: ["Mobile", "Géolocalisation", "Micro-services", "Sortie Imminente"],
-    tags: ["React Native", "Node.js", "Micro-services", "Géolocalisation", "Docker", "API REST"],
-    desc: "Plateforme de réservation d'activités sportives.",
-    longDesc: "Plateforme de réservation d'activités sportives en toute sécurité. Architecture micro-services avec géolocalisation en temps réel, système de réservation, paiement sécurisé et notifications push. Application mobile React Native connectée à un backend Node.js conteneurisé avec Docker.",
-    preview: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     title: "AuditSense (SaaS)",
