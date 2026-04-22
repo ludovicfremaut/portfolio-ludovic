@@ -15,7 +15,7 @@
 
 import { NAV_LINKS } from "../../data/constants";
 import { SunIcon, MoonIcon } from "../../assets/icons";
-import cvPdf from "../../assets/docs/CV-Fremaut-Ludovic.pdf";
+import cvPdf from "../../assets/docs/CV-Ludovic-Fremaut.pdf";
 
 /**
  * Barre de navigation responsive
