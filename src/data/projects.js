@@ -29,11 +29,25 @@ export const PROJECTS = [
   },
   {
     title: "GoSportNow",
-    tech: ["Mobile", "Géolocalisation", "Micro-services", "Sortie Imminente"],
+    tech: ["Mobile", "Géolocalisation", "Collaboration", "Disponible"],
     tags: ["React Native", "Node.js", "Micro-services", "Géolocalisation", "Docker", "API REST"],
     desc: "Plateforme de réservation d'activités sportives.",
-    longDesc: "Plateforme de réservation d'activités sportives en toute sécurité. Architecture micro-services avec géolocalisation en temps réel, système de réservation, paiement sécurisé et notifications push. Application mobile React Native connectée à un backend Node.js conteneurisé avec Docker.",
+    longDesc: "Plateforme de réservation d'activités sportives en toute sécurité, développée à trois en méthode agile. Architecture micro-services avec géolocalisation en temps réel, système de réservation, paiement sécurisé et notifications push. Application mobile React Native connectée à un backend Node.js conteneurisé avec Docker.",
     preview: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    url: "https://gosportnow.fr",
+    // Équipe du projet (collaboration agile) — isMe met en avant le propriétaire du portfolio
+    team: [
+      { name: "Ludovic Fremaut", role: "Lead Frontend", isMe: true },
+      { name: "Anthony", role: "Tech Lead" },
+      { name: "Nicolas", role: "Lead Backend" },
+    ],
+    // Liens de téléchargement (App Store / Google Play)
+    stores: {
+      ios: "https://apps.apple.com/fr/app/gosportnow/id6760923778",
+      android: "https://play.google.com/store/apps/details?id=com.gosportnow.app&hl=fr",
+    },
+    // URL universelle de téléchargement (QR code) → redirige selon la plateforme
+    downloadUrl: "https://gosportnow.fr/download",
   },
   {
     title: "Stage 97Pass",
@@ -66,4 +80,4 @@ export const PROJECTS = [
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Tags qui reçoivent un style accent (violet) */
-export const ACCENT_TAGS = ["Sortie Imminente"];
+export const ACCENT_TAGS = ["Sortie Imminente", "Disponible", "Collaboration"];
