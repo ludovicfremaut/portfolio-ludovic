@@ -18,6 +18,15 @@
 
 export const PROJECTS = [
   {
+    title: "JobPilot — Assistant IA d'emploi",
+    tech: ["Agents IA", "Automatisation", "Node.js", "En cours"],
+    tags: ["LLM / IA générative", "Agents planifiés", "API France Travail", "Node.js", "Notion API", "Prompt engineering", "Automatisation"],
+    desc: "J'ai automatisé ma propre recherche d'emploi : veille, tri et rédaction assistées par IA.",
+    longDesc: "Méta-projet : un assistant qui pilote ma recherche d'emploi de bout en bout. Chaque matin, des agents planifiés scrutent les sources d'offres (France Travail, Hellowork), filtrent selon mes profils cibles (dev full-stack, dev IA, technicien IT — alternance & CDI), sélectionnent le bon CV et rédigent un message de candidature personnalisé via un LLM. Tout est centralisé dans un pipeline de suivi (Notion) avec notifications sur Mac et iPhone, et une salle de contrôle visuelle. Point clé : human-in-the-loop — rien n'est envoyé sans ma validation. Une démonstration concrète d'intégration d'IA, d'automatisation et d'orchestration d'agents au service d'un usage réel.",
+    preview: "/projects/copilot-emploi.png",
+    previewPosition: "top",
+  },
+  {
     title: "Nicolas Lefebvre Immobilier",
     tech: ["HTML5", "CSS3", "Mobile First", "Client"],
     tags: ["HTML5", "CSS3", "Mobile First", "Responsive", "Landing Page", "QR Code", "SEO local"],
