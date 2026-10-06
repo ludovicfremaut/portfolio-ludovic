@@ -3,6 +3,7 @@
  * @description Barre de navigation fixe du portfolio.
  * Gère l'affichage desktop (liens centrés) et mobile (menu burger).
  * Inclut le switch light/dark mode.
+ * Le lien CV ouvre un petit menu : CV (PDF) ou parcours raconté (présentation animée).
  * 
  * Props:
  * - activeLink: Lien actuellement actif
@@ -13,9 +14,81 @@
  * - onToggleTheme: Callback pour changer de thème
  */
 
-import { NAV_LINKS } from "../../data/constants";
+import { useEffect, useRef, useState } from "react";
+import { NAV_LINKS, PARCOURS_URL } from "../../data/constants";
 import { SunIcon, MoonIcon } from "../../assets/icons";
 import cvPdf from "../../assets/docs/CV-Ludovic-Fremaut-2.pdf";
+
+
+/** Les deux formats du CV proposés dans le menu */
+const CV_ITEMS = [
+  { label: "CV (PDF)", hint: "Le CV classique", href: cvPdf },
+  { label: "Parcours raconté · 8 min", hint: "Mon parcours en animation narrée", href: PARCOURS_URL },
+];
+
+/**
+ * Menu déroulant [CV] (desktop) : CV PDF ou parcours raconté.
+ * Se ferme au clic extérieur, avec Échap ou après un choix.
+ */
+function CvMenu({ label, isDark }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className={`text-xs font-medium tracking-[0.15em] transition-colors ${
+          open
+            ? isDark ? "text-white" : "text-slate-900"
+            : isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
+        }`}
+      >
+        [{label}]
+      </button>
+      {open && (
+        <div
+          className={`absolute right-0 top-full mt-3 w-64 rounded-xl border p-2 shadow-xl ${
+            isDark ? "bg-[#14141d] border-white/10" : "bg-white border-slate-200"
+          }`}
+        >
+          {CV_ITEMS.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className={`block rounded-lg px-3 py-2.5 transition-colors ${
+                isDark ? "hover:bg-white/10" : "hover:bg-slate-100"
+              }`}
+            >
+              <span className={`block text-sm font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>
+                {item.label}
+              </span>
+              <span className="block text-xs text-slate-500">{item.hint}</span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /**
  * Barre de navigation responsive
@@ -45,21 +118,9 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
         {/* Liens desktop - centrés */}
         <div className="hidden md:flex items-center gap-6">
           {NAV_LINKS.map((link) => {
-            // Le lien CV ouvre le PDF dans un nouvel onglet
+            // Le lien CV ouvre un menu : CV PDF ou parcours raconté
             if (link.id === "cv") {
-              return (
-                <a
-                  key={link.id}
-                  href={cvPdf}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`text-xs font-medium tracking-[0.15em] transition-colors ${
-                    isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
-                  }`}
-                >
-                  [{link.label}]
-                </a>
-              );
+              return <CvMenu key={link.id} label={link.label} isDark={isDark} />;
             }
             
             // Autres liens : smooth scroll
@@ -115,21 +176,19 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
             : "bg-white border-slate-200"
         }`}>
           {NAV_LINKS.map((link) => {
-            // Le lien CV ouvre le PDF dans un nouvel onglet
+            // Les deux formats du CV, l'un sous l'autre
             if (link.id === "cv") {
-              return (
+              return CV_ITEMS.map((item) => (
                 <a
-                  key={link.id}
-                  href={cvPdf}
+                  key={item.label}
+                  href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`text-sm font-medium tracking-widest ${
-                    isDark ? "text-slate-500" : "text-slate-500"
-                  }`}
+                  className="text-sm font-medium tracking-widest text-slate-500"
                 >
-                  [{link.label}]
+                  [{item.label.toUpperCase()}]
                 </a>
-              );
+              ));
             }
             
             // Autres liens : smooth scroll
