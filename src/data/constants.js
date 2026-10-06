@@ -16,6 +16,9 @@ export const NAV_LINKS = [
   { label: "CV", id: "cv" },
 ];
 
+/** Présentation animée et narrée du parcours (CV narratif), proposée dans le menu CV */
+export const PARCOURS_URL = "https://parcours.letempsdunsite.fr";
+
 // IMAGES
 
 /** Images de fond pour la section Hero (split gauche/droite) */
