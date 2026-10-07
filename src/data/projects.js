@@ -18,11 +18,11 @@
 
 export const PROJECTS = [
   {
-    title: "JobPilot — Assistant IA d'emploi",
-    tech: ["Agents IA", "Automatisation", "Node.js", "En cours"],
-    tags: ["LLM / IA générative", "Agents planifiés", "API France Travail", "Node.js", "Notion API", "Prompt engineering", "Automatisation"],
-    desc: "J'ai automatisé ma propre recherche d'emploi : veille, tri et rédaction assistées par IA.",
-    longDesc: "Méta-projet : un assistant qui pilote ma recherche d'emploi de bout en bout. Chaque matin, des agents planifiés scrutent les sources d'offres (France Travail, Hellowork), filtrent selon mes profils cibles (dev full-stack, dev IA, technicien IT — alternance & CDI), sélectionnent le bon CV et rédigent un message de candidature personnalisé via un LLM. Tout est centralisé dans un pipeline de suivi (Notion) avec notifications sur Mac et iPhone, et une salle de contrôle visuelle. Point clé : human-in-the-loop — rien n'est envoyé sans ma validation. Une démonstration concrète d'intégration d'IA, d'automatisation et d'orchestration d'agents au service d'un usage réel.",
+    title: "JobPilot, assistant d'emploi à agents IA",
+    tech: ["Agents IA", "Node.js", "PostgreSQL", "En production"],
+    tags: ["Agents IA", "API Claude", "API France Travail", "Node.js", "Express", "PostgreSQL", "React", "Docker"],
+    desc: "Sept agents aux rôles séparés, de la veille des offres à la relecture des lettres, toujours validés par un humain.",
+    longDesc: "Un assistant qui pilote ma recherche d'emploi de bout en bout. Sept agents aux rôles séparés, enchaînés par le code : veille des offres France Travail et La Bonne Alternance, notation de chaque offre face à mon profil réel, enquête sur l'entreprise, rédaction de la lettre, puis relecture par un contrôle anti-IA en français qui vérifie chaque affirmation. Rien n'est envoyé sans ma validation : l'agent de suivi crée seulement des brouillons Gmail et lit les réponses. Comptes multi-utilisateurs, journal de chaque passage d'agent, déployé avec Docker sur mon serveur, avec mise en ligne automatique.",
     preview: "/projects/copilot-emploi.png",
     previewPosition: "top",
   },
@@ -38,10 +38,10 @@ export const PROJECTS = [
   },
   {
     title: "GoSportNow",
-    tech: ["Mobile", "Géolocalisation", "Collaboration", "Disponible"],
-    tags: ["React Native", "Node.js", "Micro-services", "Géolocalisation", "Docker", "API REST"],
-    desc: "Plateforme de réservation d'activités sportives.",
-    longDesc: "Plateforme de réservation d'activités sportives en toute sécurité, développée à trois en méthode agile. Architecture micro-services avec géolocalisation en temps réel, système de réservation, paiement sécurisé et notifications push. Application mobile React Native connectée à un backend Node.js conteneurisé avec Docker.",
+    tech: ["Mobile", "Géolocalisation", "Collaboration", "Sur les stores"],
+    tags: ["React Native", "Expo", "TypeScript", "NestJS", "PostgreSQL", "Redis", "Socket.io", "Docker"],
+    desc: "Application mobile qui met en relation des sportifs proches selon leur niveau et leurs disponibilités.",
+    longDesc: "Application mobile qui met en relation des sportifs proches selon leur niveau et leurs disponibilités, publiée sur l'App Store et Google Play. Nous l'avons construite à trois, de la conception en MERISE jusqu'au lancement public. J'ai mené le frontend et contribué au backend, et je m'occupe aussi de la promotion auprès des premiers utilisateurs.",
     preview: "https://images.unsplash.com/photo-1523206489230-c012c64b2b48?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     url: "https://gosportnow.fr",
     // Équipe du projet (collaboration agile) — isMe met en avant le propriétaire du portfolio
@@ -60,18 +60,18 @@ export const PROJECTS = [
   },
   {
     title: "Stage 97Pass",
-    tech: ["React", "Supabase", "Agile", "Dashboard"],
-    tags: ["React", "Supabase", "Tailwind CSS", "Agile / Scrum", "Dashboard", "API REST"],
-    desc: "Plateforme coopérative de réductions locales.",
-    longDesc: "Plateforme coopérative de réductions locales destinée aux commerçants de l'île de la Réunion. Développement d'un dashboard complet avec gestion des utilisateurs, statistiques en temps réel et système de coupons. Intégration de Supabase pour l'authentification et la base de données, le tout dans un workflow Agile avec sprints hebdomadaires.",
+    tech: ["Next.js", "Supabase", "Agile", "Stage à distance"],
+    tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Tailwind CSS", "Agile"],
+    desc: "Tableau de bord administrateur d'une plateforme de réductions pour les commerçants de La Réunion.",
+    longDesc: "Stage mené à distance, à 9 000 km, pour une plateforme coopérative de réductions destinée aux commerçants de l'île de La Réunion. J'ai construit le tableau de bord administrateur de bout en bout, avec l'authentification et la gestion des rôles utilisateurs sur Supabase et PostgreSQL, en méthode agile avec revues de code et en autonomie complète.",
     preview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80",
   },
   {
     title: "SkillSwap",
-    tech: ["Node.js", "Express", "MVC", "JWT"],
-    tags: ["Node.js", "Express", "MongoDB", "JWT", "MVC", "Agile", "API REST"],
-    desc: "Application d'échange de services entre particuliers.",
-    longDesc: "Projet de fin d'études — Application d'échange de services entre particuliers réalisée en mode Agile. Architecture MVC complète avec authentification JWT, gestion des profils, système de matching et messagerie intégrée. Backend Node.js/Express avec base de données MongoDB et déploiement Docker.",
+    tech: ["React", "Node.js", "PostgreSQL", "Lead frontend"],
+    tags: ["React 19", "TypeScript", "Tailwind", "Zustand", "Express", "Sequelize", "PostgreSQL", "Zod"],
+    desc: "Application d'échange de services entre particuliers, projet de fin de titre soutenu devant jury.",
+    longDesc: "Projet de fin de titre soutenu devant jury : une application de mise en relation entre particuliers pour échanger des services. L'équipe s'est réparti les rôles et j'ai pris le frontend en charge (lead frontend), de l'architecture des composants aux règles de code et à la revue des pull requests. Côté serveur, API Node.js/Express en MVC avec authentification JWT et validation des entrées.",
     preview: "https://media.istockphoto.com/id/1249140513/fr/photo/idée-parfaite.jpg?s=612x612&w=is&k=20&c=vSbGw2V3MsdtlfQS1VGrTbSF8Ezj5UJD6GVaIuwUBhY=",
   },
   {
