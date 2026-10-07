@@ -1,13 +1,68 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mon-portfolio</title>
+    <title>Ludovic Fremaut · Développeur web et mobile</title>
+    <meta name="description" content="Ludovic Fremaut, concepteur développeur d'applications web et mobile près d'Amiens. Vingt et un ans d'industrie avant le code. Projets GoSportNow, JobPilot, 97Pass, SkillSwap." />
+    <meta name="author" content="Ludovic Fremaut" />
+    <link rel="canonical" href="https://ludovic-dev.com/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#14171c" />
+
+    <!-- Aperçu des liens (LinkedIn, mail, messageries) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Ludovic Fremaut" />
+    <meta property="og:url" content="https://ludovic-dev.com/" />
+    <meta property="og:title" content="Ludovic Fremaut · Développeur web et mobile" />
+    <meta property="og:description" content="Concepteur développeur d'applications, vingt et un ans d'industrie avant le code. Mes projets, mon parcours et mon CV." />
+    <meta property="og:image" content="https://ludovic-dev.com/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ludovic Fremaut, concepteur développeur d'applications" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ludovic Fremaut · Développeur web et mobile" />
+    <meta name="twitter:description" content="Concepteur développeur d'applications, vingt et un ans d'industrie avant le code." />
+    <meta name="twitter:image" content="https://ludovic-dev.com/og.png" />
+
+    <!-- Données structurées : qui est la personne derrière le site -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ludovic Fremaut",
+        "jobTitle": "Concepteur Développeur d'Applications",
+        "url": "https://ludovic-dev.com/",
+        "image": "https://ludovic-dev.com/og.png",
+        "address": { "@type": "PostalAddress", "addressLocality": "Marcelcave", "addressRegion": "Hauts-de-France", "addressCountry": "FR" },
+        "sameAs": [
+          "https://www.linkedin.com/in/ludovic-fremaut-dev/",
+          "https://github.com/ludovicfremaut",
+          "https://parcours.letempsdunsite.fr",
+          "https://letempsdunsite.fr"
+        ],
+        "knowsAbout": ["React", "React Native", "TypeScript", "Node.js", "PostgreSQL", "Agents IA"]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <main style="max-width: 720px; margin: 40px auto; padding: 0 16px; font-family: system-ui, sans-serif; line-height: 1.5">
+        <h1>Ludovic Fremaut</h1>
+        <p>Concepteur développeur d'applications web et mobile, à Marcelcave près d'Amiens. Vingt et un ans d'industrie avant le code.</p>
+        <h2>Projets</h2>
+        <ul>
+          <li><a href="https://gosportnow.fr">GoSportNow</a>, application mobile de mise en relation de sportifs, développée à trois (lead frontend).</li>
+          <li>JobPilot, assistant de recherche d'emploi à base d'agents IA.</li>
+          <li><a href="https://nicolaslefebvre-immo-hauts-de-france.fr">Nicolas Lefebvre Immobilier</a>, page mobile d'un conseiller immobilier, ouverte depuis un QR code.</li>
+          <li>97Pass, tableau de bord d'une plateforme de réductions pour les commerçants de La Réunion (stage).</li>
+          <li>SkillSwap, application d'échange de services, projet de fin de titre.</li>
+        </ul>
+        <p><a href="https://parcours.letempsdunsite.fr">Mon parcours en vidéo</a> · <a href="https://www.linkedin.com/in/ludovic-fremaut-dev/">LinkedIn</a> · <a href="https://github.com/ludovicfremaut">GitHub</a></p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
