@@ -5,7 +5,7 @@
  * - Apparaît après le haut de la page d'accueil (tout de suite sur une page projet).
  * - Deux bulles, une seule fois par visite : un bonjour, puis un rappel de contacter
  *   Ludovic quand le formulaire de contact arrive à l'écran.
- * - Ses yeux suivent le pointeur ; son oreille-engrenage tourne quand il « parle ».
+ * - Ses yeux suivent le pointeur ; son oreille-engrenage tourne quand il « écrit ».
  *
  * Accessibilité : bouton avec aria-expanded, panneau non modal (role="dialog"),
  * Échap le referme et rend le focus au bouton, réponses annoncées (aria-live).
@@ -39,7 +39,7 @@ const seen = {
 };
 
 /** Le visage de Boulon, en SVG */
-function BoulonFace({ isDark, talking, eyes }) {
+function BoulonFace({ isDark, talking, eyesRef }) {
   return (
     <svg viewBox="0 0 64 64" className="w-full h-full" aria-hidden="true">
       {/* Antenne */}
@@ -54,7 +54,7 @@ function BoulonFace({ isDark, talking, eyes }) {
       {/* Écran */}
       <rect x="18" y="22" width="30" height="20" rx="7" className="fill-[#0d0d14]" />
       {/* Yeux (suivent le pointeur) */}
-      <g style={{ transform: `translate(${eyes.x}px, ${eyes.y}px)`, transition: "transform 0.15s ease-out" }}>
+      <g ref={eyesRef} style={{ transition: "transform 0.15s ease-out" }}>
         <rect x="24" y="27.5" width="5" height="7" rx="2.5" className={`boulon-eye ${isDark ? "fill-cyan-300" : "fill-violet-300"}`} />
         <rect x="37" y="27.5" width="5" height="7" rx="2.5" className={`boulon-eye ${isDark ? "fill-cyan-300" : "fill-violet-300"}`} />
       </g>
@@ -73,7 +73,8 @@ export function Bot({ isDark = true, isHome = true }) {
   const [messages, setMessages] = useState([{ from: "bot", text: BOT.greeting }]);
   const [asked, setAsked] = useState([]);
   const [typing, setTyping] = useState(false);
-  const [eyes, setEyes] = useState({ x: 0, y: 0 });
+  const eyesRef = useRef(null);
+  const firstChoiceRef = useRef(null);
   const buttonRef = useRef(null);
   const panelRef = useRef(null);
   const listRef = useRef(null);
@@ -143,7 +144,8 @@ export function Bot({ isDark = true, isHome = true }) {
         const dx = e.clientX - (rect.left + rect.width / 2);
         const dy = e.clientY - (rect.top + rect.height / 2);
         const len = Math.hypot(dx, dy) || 1;
-        setEyes({ x: (dx / len) * 2.2, y: (dy / len) * 1.6 });
+        // Écrit directement dans le DOM : pas de nouveau rendu à chaque mouvement
+        eyesRef.current?.style.setProperty("transform", `translate(${((dx / len) * 2.2).toFixed(2)}px, ${((dy / len) * 1.6).toFixed(2)}px)`);
       });
     };
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -164,6 +166,12 @@ export function Bot({ isDark = true, isHome = true }) {
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  // À l'ouverture, le focus entre dans le panneau (première question, sinon Fermer)
+  useEffect(() => {
+    if (!open) return;
+    (firstChoiceRef.current ?? panelRef.current?.querySelector("button"))?.focus();
   }, [open]);
 
   // Garde la dernière réponse visible
@@ -202,7 +210,7 @@ export function Bot({ isDark = true, isHome = true }) {
 
   const remaining = BOT.questions.filter((q) => !asked.includes(q.id));
   const showBubble = Boolean(teaser) && teaser.home === isHome && !open;
-  const talking = typing || showBubble;
+  const talking = typing;
 
   const surface = isDark ? "bg-[#14141c] border-slate-700 text-slate-200" : "bg-white border-slate-200 text-slate-700";
   const chip = isDark
@@ -287,9 +295,10 @@ export function Bot({ isDark = true, isHome = true }) {
           </ol>
 
           <div className={`px-4 pb-4 pt-1 flex flex-wrap gap-2 ${remaining.length === 0 ? "hidden" : ""}`}>
-            {remaining.map((q) => (
+            {remaining.map((q, i) => (
               <button
                 key={q.id}
+                ref={i === 0 ? firstChoiceRef : undefined}
                 type="button"
                 onClick={() => ask(q)}
                 disabled={typing}
@@ -340,7 +349,7 @@ export function Bot({ isDark = true, isHome = true }) {
         }`}
       >
         <span className="absolute inset-1.5">
-          <BoulonFace isDark={isDark} talking={talking} eyes={eyes} />
+          <BoulonFace isDark={isDark} talking={talking} eyesRef={eyesRef} />
         </span>
       </button>
     </div>

@@ -29,7 +29,11 @@ export function ScrollProgress({ isDark = true }) {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    // La hauteur change aussi quand on passe d'une page à l'autre
+    const resize = typeof ResizeObserver !== "undefined" ? new ResizeObserver(onScroll) : null;
+    resize?.observe(document.body);
     return () => {
+      resize?.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);

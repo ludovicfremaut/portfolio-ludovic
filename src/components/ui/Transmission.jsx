@@ -11,6 +11,7 @@
  * - les roues restent correctement engrenées (rapport des nombres de dents) ;
  * - mouvement réduit : roues immobiles, sauf au défilement (action du visiteur).
  *
+ * Hors écran, plus rien n'est calculé (IntersectionObserver).
  * Décoratif : aria-hidden. Les transformations sont écrites directement dans le DOM
  * (requestAnimationFrame), sans rendu React à chaque image.
  *
@@ -64,6 +65,7 @@ const CODE = GEARS[GEARS.length - 1];
 export function Transmission({ isDark = true }) {
   const gearRefs = useRef([]);
   const groupRef = useRef(null);
+  const svgRef = useRef(null);
 
   useEffect(() => {
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -73,6 +75,7 @@ export function Transmission({ isDark = true }) {
     let pointerX = null;
     let frame = 0;
     let scrollBase = window.scrollY;
+    let onScreen = true; // hors écran : plus aucun calcul ni écriture dans le DOM
 
     const render = () => {
       GEARS.forEach((g, i) => {
@@ -101,11 +104,11 @@ export function Transmission({ isDark = true }) {
       const y = window.scrollY;
       angle += (y - scrollBase) * 0.35;
       scrollBase = y;
-      if (!frame) render();
+      if (onScreen && !frame) render();
     };
 
     const onPointer = (e) => {
-      if (reduce) return;
+      if (reduce || !onScreen) return;
       if (pointerX !== null) {
         spin += (e.clientX - pointerX) * 6;
         spin = Math.max(-400, Math.min(400, spin));
@@ -118,11 +121,27 @@ export function Transmission({ isDark = true }) {
       groupRef.current?.setAttribute("transform", `translate(${(nx * 16).toFixed(1)} ${(ny * 12).toFixed(1)})`);
     };
 
+    const observer =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(([entry]) => {
+            onScreen = entry.isIntersecting;
+            if (!onScreen) {
+              cancelAnimationFrame(frame);
+              frame = 0;
+              pointerX = null;
+            } else {
+              render();
+            }
+          })
+        : null;
+    if (svgRef.current) observer?.observe(svgRef.current);
+
     render();
     if (spin) kick();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointer, { passive: true });
     return () => {
+      observer?.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointer);
@@ -138,6 +157,7 @@ export function Transmission({ isDark = true }) {
 
   return (
     <svg
+      ref={svgRef}
       viewBox="110 130 520 340"
       preserveAspectRatio="xMidYMid meet"
       className="w-full h-full"

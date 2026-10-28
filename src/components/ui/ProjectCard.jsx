@@ -3,6 +3,7 @@
  * @description Carte de projet affichée dans la grille. C'est un lien vers la page
  * du projet (/projets/:slug) : au clic, l'image de la carte « s'agrandit » jusqu'à
  * devenir l'image de la page (View Transitions, nom partagé `projet-<slug>`).
+ * Seule la carte cliquée (ou celle du projet qu'on vient de quitter) porte ce nom.
  *
  * La carte affiche un badge « En ligne » quand le projet a un lien public.
  * Supporte light/dark mode.
@@ -14,14 +15,22 @@
  */
 
 import { ACCENT_TAGS } from "../../data/projects";
-import { linkHandler } from "../../router";
+import { getTransitionSlug, linkHandler, setTransitionSlug } from "../../router";
 
 export function ProjectCard({ slug, title, tech, desc, preview, previewPosition = "center", url, isDark = true }) {
-  const href = `/projets/${slug}`;
+  const href = `/projets/${slug}/`;
+  const go = linkHandler(href);
+  const handleClick = (e) => {
+    // Seule la carte cliquée partage son image avec la page du projet
+    setTransitionSlug(slug);
+    e.currentTarget.querySelector("[data-vt-image]")?.style.setProperty("view-transition-name", `projet-${slug}`);
+    go(e);
+  };
   return (
     <a
       href={href}
-      onClick={linkHandler(href)}
+      onClick={handleClick}
+      data-project-link={slug}
       className={`group h-full flex flex-col rounded-xl overflow-hidden border transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
         isDark
           ? "bg-[#14141c] border-slate-700/50 hover:border-cyan-500/40 hover:shadow-xl hover:shadow-cyan-500/10"
@@ -29,7 +38,11 @@ export function ProjectCard({ slug, title, tech, desc, preview, previewPosition 
       }`}
     >
       {/* Image de prévisualisation (partagée avec la page projet pendant la transition) */}
-      <div className="h-36 overflow-hidden relative shrink-0" style={{ viewTransitionName: `projet-${slug}` }}>
+      <div
+        data-vt-image
+        className="h-36 overflow-hidden relative shrink-0"
+        style={{ viewTransitionName: getTransitionSlug() === slug ? `projet-${slug}` : undefined }}
+      >
         <img
           src={preview}
           alt=""

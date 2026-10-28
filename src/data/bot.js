@@ -37,9 +37,9 @@ export const BOT = {
       answer:
         "Pour commencer : GoSportNow, une application mobile publiée sur les stores et construite à trois ; JobPilot, un assistant à agents IA en production ; et Le Temps d'un Site, son activité de création de sites pour les artisans.",
       links: [
-        { label: "GoSportNow", to: "/projets/gosportnow" },
-        { label: "JobPilot", to: "/projets/jobpilot" },
-        { label: "Le Temps d'un Site", to: "/projets/le-temps-d-un-site" },
+        { label: "GoSportNow", to: "/projets/gosportnow/" },
+        { label: "JobPilot", to: "/projets/jobpilot/" },
+        { label: "Le Temps d'un Site", to: "/projets/le-temps-d-un-site/" },
       ],
     },
     {

@@ -29,14 +29,27 @@ import { ProjectPage } from "./components/pages/ProjectPage";
 import { Bot } from "./components/ui/Bot";
 import { ScrollProgress } from "./components/ui/ScrollProgress";
 import { findProject } from "./data/projects";
-import { matchProject, usePath } from "./router";
+import { useEffect } from "react";
+import { matchProject, redirect, scrollToInitialHash, usePath } from "./router";
 
 /**
  * Composant principal de l'application
  */
 export default function App() {
   const path = usePath();
-  const project = findProject(matchProject(path));
+  const slug = matchProject(path);
+  const project = findProject(slug);
+  const unknownProject = Boolean(slug) && !project;
+
+  // Adresse de projet inconnue : retour à l'accueil (pas de page vide à cette adresse)
+  useEffect(() => {
+    if (unknownProject) redirect("/");
+  }, [unknownProject]);
+
+  // Ouverture directe d'une adresse avec ancre (ex. /#contact)
+  useEffect(() => {
+    scrollToInitialHash();
+  }, []);
   const { activeLink, menuOpen, handleNav, toggleMenu } = useNavigation("ACCUEIL", path);
   const { isDark, toggleTheme } = useTheme();
 

@@ -4,8 +4,8 @@
  * - L'image en tête reprend celle de la carte (transition `projet-<slug>`).
  * - Description complète, technologies, équipe, liens, téléchargement (stores + QR code).
  * - Navigation vers le projet précédent / suivant et retour à la grille.
- * - Met à jour le titre de l'onglet et place le focus sur le titre à l'arrivée
- *   (annonce du changement de page pour les lecteurs d'écran).
+ * - Met à jour le titre de l'onglet. Le focus est placé sur le titre à l'arrivée
+ *   par le routeur (annonce du changement de page pour les lecteurs d'écran).
  *
  * Props :
  * - project : un projet de data/projects.js
@@ -15,7 +15,7 @@
  * <ProjectPage project={findProject("gosportnow")} isDark />
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import QRCode from "react-qr-code";
 import { PROJECTS, ACCENT_TAGS } from "../../data/projects";
 import { linkHandler } from "../../router";
@@ -25,7 +25,6 @@ import { StoreButton, AppleIcon, GooglePlayIcon } from "../ui/StoreButtons";
 const DEFAULT_TITLE = "Ludovic Fremaut · Développeur web et mobile";
 
 export function ProjectPage({ project, isDark = true }) {
-  const titleRef = useRef(null);
   const { slug, title, tags, longDesc, preview, previewPosition = "center", url, links, stores, team, downloadUrl } = project;
 
   const index = PROJECTS.findIndex((p) => p.slug === slug);
@@ -34,7 +33,6 @@ export function ProjectPage({ project, isDark = true }) {
 
   useEffect(() => {
     document.title = `${title} · Ludovic Fremaut`;
-    titleRef.current?.focus({ preventScroll: true });
     return () => {
       document.title = DEFAULT_TITLE;
     };
@@ -54,7 +52,7 @@ export function ProjectPage({ project, isDark = true }) {
         {/* Retour à la grille */}
         <a
           href="/#projets"
-          onClick={linkHandler("/#projets", { direction: "back" })}
+          onClick={linkHandler("/#projets", { back: true })}
           className={`inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] mb-8 transition-colors ${
             isDark ? "text-slate-400 hover:text-white" : "text-slate-600 hover:text-slate-900"
           }`}
@@ -79,7 +77,6 @@ export function ProjectPage({ project, isDark = true }) {
           {/* Colonne principale */}
           <div>
             <h1
-              ref={titleRef}
               tabIndex={-1}
               className={`text-[clamp(2rem,5vw,3.25rem)] font-black leading-[1.05] tracking-tight mb-6 focus:outline-none ${heading}`}
             >
@@ -209,8 +206,8 @@ export function ProjectPage({ project, isDark = true }) {
           ].map(({ p, label, dir, align }) => (
             <a
               key={label}
-              href={`/projets/${p.slug}`}
-              onClick={linkHandler(`/projets/${p.slug}`, { direction: dir })}
+              href={`/projets/${p.slug}/`}
+              onClick={linkHandler(`/projets/${p.slug}/`, { direction: dir })}
               className={`group rounded-xl border p-5 transition-colors ${align} ${panel} ${
                 isDark ? "hover:border-cyan-500/50" : "hover:border-violet-400"
               }`}

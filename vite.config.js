@@ -40,6 +40,7 @@ function projectPages() {
           .replace(/(<meta name="twitter:title" content=")[^"]*/, `$1${title}`)
           .replace(/(<meta name="twitter:description" content=")[^"]*/, `$1${desc}`)
           .replace(/(<meta name="twitter:image" content=")[^"]*/, `$1${image}`)
+          .replace(/(<meta property="og:image:alt" content=")[^"]*/, `$1${escape(`Aperçu du projet ${p.title}`)}`)
           // Les dimensions de og.png ne s'appliquent pas à une capture de projet
           .replace(/\s*<meta property="og:image:(width|height)" content="[^"]*" \/>/g, "");
         this.emitFile({ type: "asset", fileName: `projets/${p.slug}/index.html`, source: page });

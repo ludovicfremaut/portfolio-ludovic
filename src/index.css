@@ -163,7 +163,8 @@ html.light {
 .boulon-eye {
   transform-box: fill-box;
   transform-origin: center;
-  animation: boulon-blink 5s ease-in-out infinite;
+  /* Quelques clignements puis plus rien (pas d'animation sans fin, WCAG 2.2.2) */
+  animation: boulon-blink 4s ease-in-out 3;
 }
 
 @keyframes boulon-spin { to { transform: rotate(360deg); } }
@@ -213,4 +214,9 @@ html.light {
   .boulon-dot {
     animation: none;
   }
+}
+
+/* Cibles de focus posées par le routeur (titres, sections) : pas de cadre visible */
+[tabindex="-1"]:focus {
+  outline: none;
 }
