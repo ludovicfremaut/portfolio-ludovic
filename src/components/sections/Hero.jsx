@@ -11,10 +11,14 @@
  * l'utilisateur a demandé moins d'animations. Les lecteurs d'écran lisent la
  * liste complète une fois.
  * Un indicateur en bas invite à faire défiler la page.
+ * À gauche, la « transmission » (components/ui/Transmission.jsx) : les engrenages
+ * de l'industrie entraînent la roue du code.
  */
 
 import { useEffect, useState } from "react";
 import { HERO_IMAGES, HERO_ROTATING_WORDS, PERSONAL_INFO } from "../../data/constants";
+import { Transmission } from "../ui/Transmission";
+import { linkHandler } from "../../router";
 
 const ROTATE_EVERY_MS = 1500;
 
@@ -56,7 +60,7 @@ export function Hero({ isDark = true }) {
   const bgColor = isDark ? "#0d0d14" : "#f1f5f9";
   
   return (
-    <section id="accueil" className="relative h-150 flex">
+    <section id="accueil" className="relative h-150 flex overflow-hidden">
       {/* Partie gauche - 1/2 */}
       <div className="relative w-1/2 overflow-hidden">
         <div
@@ -87,6 +91,13 @@ export function Hero({ isDark = true }) {
         }} />
       </div>
 
+      {/* Transmission : industrie → code (atténuée sous le texte sur mobile) */}
+      <div className="absolute inset-y-0 left-0 w-full md:w-[52%] flex items-center justify-center pt-14 pointer-events-none opacity-25 md:opacity-100">
+        <div className="w-[min(92%,560px)] aspect-[520/340] hero-transmission">
+          <Transmission isDark={isDark} />
+        </div>
+      </div>
+
       {/* Contenu Hero - centré sur toute la largeur */}
       <div className="absolute inset-0 flex items-center justify-center pt-14">
         <div className="w-full max-w-6xl mx-auto px-6">
@@ -114,6 +125,7 @@ export function Hero({ isDark = true }) {
               {/* CTA */}
               <a
                 href="#projets"
+                onClick={linkHandler("/#projets")}
                 className={`inline-block font-semibold px-6 py-3 rounded-lg text-sm tracking-wider transition-all duration-200 hover:shadow-xl ${
                   isDark 
                     ? "bg-[#2a2a3a] hover:bg-[#3a3a4a] text-white border border-slate-600/50 hover:border-slate-500 hover:shadow-cyan-500/50" 
@@ -130,6 +142,7 @@ export function Hero({ isDark = true }) {
       {/* Invitation à faire défiler */}
       <a
         href="#a-propos"
+        onClick={linkHandler("/#a-propos")}
         aria-label="Faire défiler vers la section À propos"
         className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.3em] transition-colors ${
           isDark ? "text-slate-400 hover:text-white" : "text-slate-600 hover:text-slate-900"

@@ -3,107 +3,59 @@
  * @description Section affichant la grille des projets.
  * - Filtres au-dessus de la grille (Tous, Sites web, Applications, IA, En équipe),
  *   avec le nombre de projets par filtre.
+ * - Chaque carte mène à la page du projet (/projets/:slug), avec une transition animée.
  * - Les cartes apparaissent en cascade quand la grille entre dans l'écran.
- * - Au clic sur une card : elle devient active, la vue détaillée s'affiche
- *     - sur mobile : directement en dessous de la card cliquée
- *     - sur desktop : sous toute la grille, pleine largeur, et la page défile jusqu'à elle
- *   (une seule vue détaillée est rendue à la fois, selon la largeur d'écran)
- *   Échap (focus dans la section) ou le bouton « Fermer » referme la vue détaillée
- *   et rend le focus à la carte.
- * - Un bouton "Voir plus" révèle progressivement les projets par paquets de 3.
+ * - Un bouton "Voir plus" révèle les projets restants par paquets de 3.
  * Supporte light/dark mode.
  */
 
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ProjectCard, ProjectCardExpanded } from "../ui/ProjectCard";
+import { useMemo, useState } from "react";
+import { ProjectCard } from "../ui/ProjectCard";
 import { Reveal } from "../ui/Reveal";
 import { PROJECTS, PROJECT_FILTERS } from "../../data/projects";
 
 const INITIAL_VISIBLE = 6;
 const STEP = 3;
 
-/** Vrai sur écran large (md et plus) : la vue détaillée s'affiche alors sous la grille */
-function useIsDesktop() {
-  const query = "(min-width: 768px)";
-  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia?.(query).matches ?? true);
-  useEffect(() => {
-    const mql = window.matchMedia?.(query);
-    if (!mql) return;
-    const onChange = (e) => setIsDesktop(e.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-  return isDesktop;
-}
-
 /** Projets correspondant à un filtre */
 const filterProjects = (filterId) =>
   filterId === "all" ? PROJECTS : PROJECTS.filter((p) => p.categories?.includes(filterId));
 
+// Filtre et nombre de cartes gardés en mémoire entre deux pages : au retour
+// d'une page projet, la grille est retrouvée telle qu'on l'a laissée.
+const memory = { filter: "all", visibleCount: INITIAL_VISIBLE };
+const remember = (patch) => Object.assign(memory, patch);
+
 /**
- * Section Projects avec filtres, grille de cartes et expansion au clic
+ * Section Projects avec filtres et grille de cartes
  */
 export function Projects({ isDark = true }) {
-  const [filter, setFilter] = useState("all");
-  // Le projet ouvert est repéré par son titre (stable quand on change de filtre)
-  const [activeTitle, setActiveTitle] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
-  const desktopPanelRef = useRef(null);
-  const cardRefs = useRef({});
-  const sectionRef = useRef(null);
-  const isDesktop = useIsDesktop();
+  const [filter, setFilterState] = useState(memory.filter);
+  const [visibleCount, setVisibleCountState] = useState(memory.visibleCount);
+  const setFilter = (v) => {
+    remember({ filter: v });
+    setFilterState(v);
+  };
+  const setVisibleCount = (next) => {
+    remember({ visibleCount: next });
+    setVisibleCountState(next);
+  };
 
   const filteredProjects = useMemo(() => filterProjects(filter), [filter]);
   const visibleProjects = filteredProjects.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProjects.length;
-  const activeProject = visibleProjects.find((p) => p.title === activeTitle) ?? null;
-
-  const handleToggle = (title) => {
-    setActiveTitle((current) => (current === title ? null : title));
-  };
-
-  // Ferme le détail ; rend le focus à la carte seulement s'il était dans la section
-  const handleClose = useCallback(() => {
-    const focusInSection = sectionRef.current?.contains(document.activeElement);
-    const card = cardRefs.current[activeTitle];
-    setActiveTitle(null);
-    if (focusInSection) card?.focus();
-  }, [activeTitle]);
 
   const handleFilter = (id) => {
     setFilter(id);
-    setActiveTitle(null);
     setVisibleCount(INITIAL_VISIBLE);
   };
 
   const handleShowMore = () => {
-    setVisibleCount((count) => Math.min(count + STEP, filteredProjects.length));
+    setVisibleCount(Math.min(visibleCount + STEP, filteredProjects.length));
   };
 
-  // Desktop : amène la vue détaillée à l'écran (elle s'affiche sous la grille)
-  useEffect(() => {
-    if (!activeProject) return;
-    const panel = desktopPanelRef.current;
-    if (!panel) return;
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    panel.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
-  }, [activeProject, isDesktop]);
-
-  // Échap referme la vue détaillée, seulement quand le focus est dans la section Projets
-  // (pas pendant la saisie du formulaire de contact ni dans une modale ou un menu)
-  useEffect(() => {
-    if (!activeTitle) return;
-    const onKey = (e) => {
-      if (e.key !== "Escape" || e.defaultPrevented) return;
-      if (!sectionRef.current?.contains(document.activeElement)) return;
-      handleClose();
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [activeTitle, handleClose]);
-
   return (
-    <section id="projets" ref={sectionRef} className={`py-20 px-6 transition-colors duration-300 ${
+    <section id="projets" className={`py-20 px-6 transition-colors duration-300 ${
       isDark ? "bg-transparent" : "bg-slate-100"
     }`}>
       <div className="max-w-5xl mx-auto">
@@ -150,45 +102,13 @@ export function Projects({ isDark = true }) {
         </Reveal>
 
         {/* Grille de projets (la clé relance l'apparition à chaque filtre) */}
-        <div key={filter} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {visibleProjects.map((project, index) => {
-            const isActive = activeTitle === project.title;
-            const isDimmed = activeProject !== null && !isActive;
-            const panelId = "project-expanded";
-            return (
-              <Fragment key={project.title}>
-                <Reveal delay={(index % 3) * 90} className="h-full">
-                  <button
-                    ref={(el) => { cardRefs.current[project.title] = el; }}
-                    type="button"
-                    onClick={() => handleToggle(project.title)}
-                    aria-expanded={isActive}
-                    aria-controls={isActive ? panelId : undefined}
-                    className={`text-left w-full h-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl ${
-                      isDimmed ? "md:opacity-40" : "opacity-100"
-                    }`}
-                  >
-                    <ProjectCard {...project} isDark={isDark} isActive={isActive} />
-                  </button>
-                </Reveal>
-
-                {/* Mobile : vue détaillée sous la card cliquée */}
-                {isActive && !isDesktop && (
-                  <div id={panelId} className="sm:col-span-2">
-                    <ProjectCardExpanded {...project} isDark={isDark} onClose={handleClose} />
-                  </div>
-                )}
-              </Fragment>
-            );
-          })}
-        </div>
-
-        {/* Desktop : vue détaillée pleine largeur sous la grille */}
-        {isDesktop && activeProject && (
-          <div ref={desktopPanelRef} id="project-expanded" className="mt-8 max-w-3xl mx-auto scroll-mt-24">
-            <ProjectCardExpanded key={activeProject.title} {...activeProject} isDark={isDark} onClose={handleClose} />
-          </div>
-        )}
+        <ul key={filter} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {visibleProjects.map((project, index) => (
+            <Reveal as="li" key={project.slug} delay={(index % 3) * 90} className="h-full">
+              <ProjectCard {...project} isDark={isDark} />
+            </Reveal>
+          ))}
+        </ul>
 
         {/* Bouton "Voir plus" */}
         {hasMore && (

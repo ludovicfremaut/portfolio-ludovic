@@ -17,9 +17,10 @@ import { useEffect, useState } from "react";
 /**
  * @param {string[]} ids Identifiants des sections à surveiller, dans l'ordre de la page
  * @param {string} [initialId] Section active au chargement (défaut : la première)
+ * @param {string} [refreshKey] Change quand la page change : les sections sont alors recherchées à nouveau
  * @returns {[string|null, (id: string) => void]} Section visible et fonction pour la forcer
  */
-export function useScrollSpy(ids, initialId = ids[0] ?? null) {
+export function useScrollSpy(ids, initialId = ids[0] ?? null, refreshKey = "") {
   const [activeId, setActiveId] = useState(initialId);
   const key = ids.join("|");
 
@@ -42,7 +43,7 @@ export function useScrollSpy(ids, initialId = ids[0] ?? null) {
     );
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [key]);
+  }, [key, refreshKey]);
 
   return [activeId, setActiveId];
 }

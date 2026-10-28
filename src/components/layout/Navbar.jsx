@@ -17,6 +17,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NAV_LINKS, PARCOURS_URL } from "../../data/constants";
 import { SunIcon, MoonIcon } from "../../assets/icons";
+import { linkHandler } from "../../router";
 import cvPdf from "../../assets/docs/CV-Ludovic-Fremaut-2.pdf";
 
 
@@ -95,7 +96,7 @@ function CvMenu({ label, isDark }) {
  */
 export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark, onToggleTheme }) {
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b transition-colors duration-300 ${
+    <nav className={`site-navbar fixed top-0 left-0 right-0 z-50 backdrop-blur-sm border-b transition-colors duration-300 ${
       isDark 
         ? "bg-[#0d0d14]/95 border-white/5" 
         : "bg-white/95 border-slate-200"
@@ -127,8 +128,8 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
             return (
               <a
                 key={link.id}
-                href={`#${link.id}`}
-                onClick={() => onNavClick(link.label)}
+                href={`/#${link.id}`}
+                onClick={(e) => { onNavClick(link.label); linkHandler(`/#${link.id}`)(e); }}
                 aria-current={activeLink === link.label ? "true" : undefined}
                 className={`text-xs font-medium tracking-[0.15em] transition-colors ${
                   activeLink === link.label
@@ -196,8 +197,8 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
             return (
               <a
                 key={link.id}
-                href={`#${link.id}`}
-                onClick={() => onNavClick(link.label)}
+                href={`/#${link.id}`}
+                onClick={(e) => { onNavClick(link.label); linkHandler(`/#${link.id}`)(e); }}
                 aria-current={activeLink === link.label ? "true" : undefined}
                 className={`text-sm font-medium tracking-widest ${
                   activeLink === link.label 

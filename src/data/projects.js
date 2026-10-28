@@ -2,6 +2,7 @@
  * @file data/projects.js
  * @description Liste des projets affichés dans le portfolio.
  * Chaque projet contient :
+ * - slug: Identifiant d'URL de la page projet (/projets/:slug)
  * - title: Nom du projet
  * - tech: Technologies utilisées (tableau de tags)
  * - desc: Description courte
@@ -20,6 +21,7 @@
 
 export const PROJECTS = [
   {
+    slug: "le-temps-d-un-site",
     title: "Le Temps d'un Site",
     tech: ["Astro", "Accessibilité", "SEO local", "Mon entreprise"],
     tags: ["Astro 5", "TypeScript", "Cloudflare Pages", "Cloudflare Functions", "Keystatic", "Resend", "Turnstile", "RGAA AA", "Lighthouse CI", "JSON-LD"],
@@ -35,6 +37,7 @@ export const PROJECTS = [
     categories: ["web"],
   },
   {
+    slug: "jobpilot",
     title: "JobPilot, assistant d'emploi à agents IA",
     tech: ["Agents IA", "Node.js", "PostgreSQL", "En production"],
     tags: ["Agents IA", "API Claude", "API France Travail", "Node.js", "Express", "PostgreSQL", "React", "Docker"],
@@ -45,6 +48,7 @@ export const PROJECTS = [
     categories: ["ia", "apps"],
   },
   {
+    slug: "nicolas-lefebvre-immobilier",
     title: "Nicolas Lefebvre Immobilier",
     tech: ["HTML5", "CSS3", "Mobile First", "Client"],
     tags: ["HTML5", "CSS3", "Mobile First", "Responsive", "Landing Page", "QR Code", "SEO local"],
@@ -56,6 +60,7 @@ export const PROJECTS = [
     categories: ["web"],
   },
   {
+    slug: "gosportnow",
     title: "GoSportNow",
     tech: ["Mobile", "Géolocalisation", "Collaboration", "Sur les stores"],
     tags: ["React Native", "Expo", "TypeScript", "NestJS", "PostgreSQL", "Redis", "Socket.io", "Docker"],
@@ -79,6 +84,7 @@ export const PROJECTS = [
     downloadUrl: "https://gosportnow.fr/download",
   },
   {
+    slug: "itineraire-professionnel",
     title: "Mon itinéraire professionnel",
     tech: ["SVG", "JavaScript", "Animation", "Narration"],
     tags: ["JavaScript", "SVG animé", "Narration audio", "Accessibilité", "Plein écran"],
@@ -90,6 +96,7 @@ export const PROJECTS = [
     categories: ["web"],
   },
   {
+    slug: "97pass",
     title: "Stage 97Pass",
     tech: ["Next.js", "Supabase", "Agile", "Stage à distance"],
     tags: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Tailwind CSS", "Agile"],
@@ -99,6 +106,7 @@ export const PROJECTS = [
     categories: ["apps"],
   },
   {
+    slug: "skillswap",
     title: "SkillSwap",
     tech: ["React", "Node.js", "PostgreSQL", "Lead frontend"],
     tags: ["React 19", "TypeScript", "Tailwind", "Zustand", "Express", "Sequelize", "PostgreSQL", "Zod"],
@@ -128,3 +136,6 @@ export const PROJECT_FILTERS = [
 
 /** Tags qui reçoivent un style accent (violet) */
 export const ACCENT_TAGS = ["Sortie Imminente", "Disponible", "Collaboration", "Mon entreprise"];
+
+/** Projet correspondant à un slug, ou undefined */
+export const findProject = (slug) => PROJECTS.find((p) => p.slug === slug);
