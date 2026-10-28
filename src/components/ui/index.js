@@ -7,3 +7,4 @@
 export { TimelineIcon } from "./TimelineIcon";
 export { ProjectCard } from "./ProjectCard";
 export { LegalNoticeModal } from "./LegalNoticeModal";
+export { Reveal } from "./Reveal";

@@ -6,9 +6,48 @@
  * 
  * Layout: 1/2 gauche (image code) + 1/2 droite (image bureau)
  * Le texte est positionné à droite par-dessus les deux images.
+ * Sous le titre, une phrase « Je conçois … » fait défiler ce que je fabrique,
+ * un seul tour puis elle s'arrête sur la première phrase. Pas de défilement si
+ * l'utilisateur a demandé moins d'animations. Les lecteurs d'écran lisent la
+ * liste complète une fois.
+ * Un indicateur en bas invite à faire défiler la page.
  */
 
-import { HERO_IMAGES, PERSONAL_INFO } from "../../data/constants";
+import { useEffect, useState } from "react";
+import { HERO_IMAGES, HERO_ROTATING_WORDS, PERSONAL_INFO } from "../../data/constants";
+
+const ROTATE_EVERY_MS = 2800;
+
+/** Phrase qui change toutes les ROTATE_EVERY_MS millisecondes, le temps d'un tour */
+function RotatingWords({ isDark }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    let step = 0;
+    const id = setInterval(() => {
+      step += 1;
+      setIndex(step % HERO_ROTATING_WORDS.length);
+      if (step >= HERO_ROTATING_WORDS.length) clearInterval(id);
+    }, ROTATE_EVERY_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <p className={`text-base md:text-lg mb-8 min-h-[3.5em] md:min-h-0 max-w-[22rem] md:max-w-none ${isDark ? "text-slate-400" : "text-slate-600"}`}>
+      <span className="sr-only">Je conçois {HERO_ROTATING_WORDS.join(", ")}.</span>
+      <span aria-hidden="true">
+        Je conçois{" "}
+        <span
+          key={index}
+          className={`inline-block font-semibold animate-word-in ${isDark ? "text-cyan-300" : "text-violet-700"}`}
+        >
+          {HERO_ROTATING_WORDS[index]}
+        </span>
+      </span>
+    </p>
+  );
+}
 
 /**
  * Section Hero avec fond split et présentation
@@ -63,11 +102,14 @@ export function Hero({ isDark = true }) {
               </h1>
               
               {/* Titre */}
-              <p className={`text-lg md:text-xl font-medium tracking-[0.2em] uppercase mb-8 ${
+              <p className={`text-lg md:text-xl font-medium tracking-[0.2em] uppercase mb-4 ${
                 isDark ? "text-slate-300" : "text-slate-600"
               }`}>
                 {PERSONAL_INFO.title}
               </p>
+
+              {/* Ce que je fabrique (défilant) */}
+              <RotatingWords isDark={isDark} />
               
               {/* CTA */}
               <a
@@ -84,6 +126,20 @@ export function Hero({ isDark = true }) {
           </div>
         </div>
       </div>
+
+      {/* Invitation à faire défiler */}
+      <a
+        href="#a-propos"
+        aria-label="Faire défiler vers la section À propos"
+        className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.3em] transition-colors ${
+          isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
+        }`}
+      >
+        <span aria-hidden="true">Défiler</span>
+        <svg viewBox="0 0 24 24" className="w-5 h-5 animate-scroll-hint" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </a>
     </section>
   );
 }

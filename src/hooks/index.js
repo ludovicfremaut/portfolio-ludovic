@@ -8,3 +8,5 @@
 export { useContactForm } from "./useContactForm";
 export { useNavigation } from "./useNavigation";
 export { useTheme } from "./useTheme";
+export { useReveal } from "./useReveal";
+export { useScrollSpy } from "./useScrollSpy";

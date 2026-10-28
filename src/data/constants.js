@@ -27,6 +27,16 @@ export const HERO_IMAGES = {
   right: "https://images.unsplash.com/photo-1628258334105-2a0b3d6efee1?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
 
+// HERO
+
+/** Ce que je fabrique : phrases qui défilent sous le titre du Hero */
+export const HERO_ROTATING_WORDS = [
+  "des sites pour les artisans de la Somme",
+  "des applications mobiles",
+  "des agents IA qui travaillent avec vous",
+  "des outils qui font gagner du temps",
+];
+
 // LIENS EXTERNES
 
 /** Liens réseaux sociaux */

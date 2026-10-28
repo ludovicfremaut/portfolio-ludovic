@@ -12,6 +12,7 @@
 
 import { useState } from "react";
 import { TIMELINE_LEFT, TIMELINE_RIGHT, ABOUT_CONTENT } from "../../data/timeline";
+import { Reveal } from "../ui/Reveal";
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COMPOSANT UTILITAIRE POUR UN GROUPE D'ICÔNES AVEC TOOLTIP
@@ -75,17 +76,23 @@ export function About({ isDark }) {
       isDark ? 'bg-transparent' : 'bg-white'
     }`}>
       <div className="max-w-5xl mx-auto">
-        <h2 className={`text-center text-2xl font-bold uppercase tracking-[0.3em] mb-16 ${
-          isDark ? 'text-white' : 'text-slate-800'
-        }`}>
-          À Propos
-        </h2>
+        <Reveal>
+          <h2 className={`text-center text-2xl font-bold uppercase tracking-[0.3em] mb-16 ${
+            isDark ? 'text-white' : 'text-slate-800'
+          }`}>
+            À Propos
+          </h2>
+        </Reveal>
 
         {/* Timeline Desktop */}
-        <DesktopTimeline isDark={isDark} />
+        <Reveal delay={120}>
+          <DesktopTimeline isDark={isDark} />
+        </Reveal>
 
         {/* Timeline Mobile */}
-        <MobileTimeline isDark={isDark} />
+        <Reveal delay={120}>
+          <MobileTimeline isDark={isDark} />
+        </Reveal>
       </div>
     </section>
   );
