@@ -35,3 +35,59 @@ html {
 .animate-card-reveal {
   animation: card-reveal 0.4s ease-out forwards;
 }
+
+/* Apparition au défilement (voir hooks/useReveal.js et components/ui/Reveal.jsx) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Défilement des métiers dans le Hero */
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-word-in {
+  animation: word-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Indicateur « faire défiler » sous le Hero */
+@keyframes scroll-hint {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+.animate-scroll-hint {
+  animation: scroll-hint 1.8s ease-in-out 2;
+}
+
+/* Moins d'animations si l'utilisateur l'a demandé */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-card-expand,
+  .animate-card-reveal,
+  .animate-word-in,
+  .animate-scroll-hint {
+    animation: none;
+  }
+}

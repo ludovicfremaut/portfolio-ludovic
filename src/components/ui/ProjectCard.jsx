@@ -2,7 +2,9 @@
  * @file components/ui/ProjectCard.jsx
  * @description Carte de projet en 2 versions :
  * - ProjectCard : version compacte (grille)
- * - ProjectCardExpanded : version détaillée (overlay au hover desktop)
+ * - ProjectCardExpanded : version détaillée (ouverte au clic, avec bouton Fermer)
+ *
+ * La carte compacte affiche un badge « En ligne » quand le projet a un lien public.
  * 
  * Supporte light/dark mode.
  */
@@ -64,10 +66,10 @@ function StoreButton({ href, isDark, label, caption, children }) {
 /**
  * Carte compacte dans la grille
  */
-export function ProjectCard({ title, tech, desc, preview, previewPosition = "center", isDark = true, isActive = false }) {
+export function ProjectCard({ title, tech, desc, preview, previewPosition = "center", url, isDark = true, isActive = false }) {
   return (
     <div
-      className={`rounded-xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 group ${
+      className={`h-full flex flex-col rounded-xl overflow-hidden border transition-all duration-300 hover:-translate-y-1 group ${
         isActive
           ? isDark
             ? "bg-[#14141c] border-cyan-500/50 shadow-lg shadow-cyan-500/10 opacity-100 scale-105!"
@@ -78,10 +80,12 @@ export function ProjectCard({ title, tech, desc, preview, previewPosition = "cen
       }`}
     >
       {/* Image de prévisualisation */}
-      <div className="h-32 overflow-hidden relative">
+      <div className="h-36 overflow-hidden relative shrink-0">
         <img
           src={preview}
-          alt={title}
+          alt=""
+          loading="lazy"
+          decoding="async"
           style={{ objectPosition: previewPosition }}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
@@ -90,10 +94,18 @@ export function ProjectCard({ title, tech, desc, preview, previewPosition = "cen
             ? "bg-linear-to-t from-[#14141c] via-transparent to-transparent" 
             : "bg-linear-to-t from-white via-transparent to-transparent"
         }`} />
+        {url && (
+          <span className={`absolute top-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm ${
+            isDark ? "bg-black/85 text-emerald-300" : "bg-white text-emerald-700"
+          }`}>
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+            En ligne
+          </span>
+        )}
       </div>
 
       {/* Contenu de la carte */}
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         <h3 className={`font-bold text-base mb-3 ${isDark ? "text-white" : "text-slate-800"}`}>
           {title}
         </h3>
@@ -120,6 +132,16 @@ export function ProjectCard({ title, tech, desc, preview, previewPosition = "cen
         <p className={`text-sm leading-relaxed ${isDark ? "text-slate-400" : "text-slate-600"}`}>
           {desc}
         </p>
+
+        {/* Invitation à ouvrir le détail */}
+        <span className={`mt-auto pt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest transition-colors ${
+          isActive
+            ? isDark ? "text-cyan-300" : "text-violet-700"
+            : isDark ? "text-slate-400 group-hover:text-cyan-300" : "text-slate-600 group-hover:text-violet-700"
+        }`}>
+          {isActive ? "Détail ouvert" : "Voir le détail"}
+          <span aria-hidden="true" className={`transition-transform duration-300 ${isActive ? "rotate-90" : "group-hover:translate-x-1"}`}>→</span>
+        </span>
       </div>
     </div>
   );
@@ -132,21 +154,37 @@ export function ProjectCard({ title, tech, desc, preview, previewPosition = "cen
 /**
  * Carte expandée avec description détaillée et tous les tags
  */
-export function ProjectCardExpanded({ title, tags, longDesc, preview, previewPosition = "center", url, stores, team, downloadUrl, isDark = true }) {
+export function ProjectCardExpanded({ title, tags, longDesc, preview, previewPosition = "center", url, links, stores, team, downloadUrl, isDark = true, onClose }) {
   return (
     <div
-      className={`rounded-2xl overflow-hidden border-2 shadow-2xl animate-card-expand ${
+      role="region"
+      aria-label={`Détail du projet ${title}`}
+      className={`relative rounded-2xl overflow-hidden border-2 shadow-2xl animate-card-expand ${
         isDark 
           ? "bg-[#14141c] border-cyan-500/30 shadow-cyan-500/20" 
           : "bg-white border-violet-300 shadow-violet-200/50"
       }`}
     >
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fermer le détail du projet"
+          className={`absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border text-lg leading-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${
+            isDark
+              ? "bg-[#14141c]/90 border-slate-600 text-slate-300 hover:text-white hover:border-cyan-500"
+              : "bg-white/90 border-slate-300 text-slate-600 hover:text-slate-900 hover:border-violet-500"
+          }`}
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      )}
       <div className="flex flex-col md:flex-row md:min-h-56">
         {/* Image : en haut sur mobile, à gauche sur desktop */}
         <div className="relative overflow-hidden shrink-0 w-full h-40 md:w-2/5 md:h-auto">
           <img
             src={preview}
-            alt={title}
+            alt={`Aperçu du projet ${title}`}
             style={{ objectPosition: previewPosition }}
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -160,7 +198,7 @@ export function ProjectCardExpanded({ title, tags, longDesc, preview, previewPos
         {/* Contenu détaillé : pleine largeur sur mobile, à droite sur desktop */}
         <div className="w-full md:w-3/5 px-6 py-6 md:px-8 md:py-7 flex flex-col justify-center">
           {/* Titre */}
-          <h3 className={`font-bold text-xl mb-4 ${isDark ? "text-white" : "text-slate-800"}`}>
+          <h3 className={`font-bold text-xl mb-4 pr-8 ${isDark ? "text-white" : "text-slate-800"}`}>
             {title}
           </h3>
 
@@ -223,13 +261,15 @@ export function ProjectCardExpanded({ title, tags, longDesc, preview, previewPos
             </div>
           )}
 
-          {/* Bouton vers le site en ligne (si présent) */}
+          {/* Bouton vers le site en ligne + liens secondaires (si présents) */}
+          {(url || links?.length > 0) && (
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3 mt-5">
           {url && (
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center gap-2 mt-5 self-start font-semibold px-5 py-2.5 rounded-lg uppercase tracking-widest text-xs transition-all duration-200 border ${
+              className={`inline-flex items-center gap-2 self-start font-semibold px-5 py-2.5 rounded-lg uppercase tracking-widest text-xs transition-all duration-200 border ${
                 isDark
                   ? "bg-[#2a2a3a] hover:bg-[#3a3a4a] border-slate-600 hover:border-cyan-500 hover:shadow-xl hover:shadow-cyan-500/30 text-white"
                   : "bg-slate-800 hover:bg-slate-700 border-slate-800 hover:border-violet-500 hover:shadow-xl hover:shadow-violet-300/50 text-white"
@@ -238,6 +278,23 @@ export function ProjectCardExpanded({ title, tags, longDesc, preview, previewPos
               Voir le site
               <span aria-hidden="true">→</span>
             </a>
+          )}
+          {links?.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`text-xs font-semibold underline underline-offset-4 transition-colors ${
+                isDark
+                  ? "text-cyan-300 decoration-cyan-500/40 hover:decoration-cyan-300"
+                  : "text-violet-700 decoration-violet-300 hover:decoration-violet-700"
+              }`}
+            >
+              {link.label}
+            </a>
+          ))}
+          </div>
           )}
 
           {/* Téléchargement : boutons stores + QR code (si présents) */}
@@ -264,7 +321,7 @@ export function ProjectCardExpanded({ title, tags, longDesc, preview, previewPos
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-1.5 group/qr"
-                  aria-label="Télécharger GoSportNow (QR code)"
+                  aria-label={`Télécharger ${title} (QR code)`}
                 >
                   <div className="rounded-xl bg-white p-2 shadow-sm transition-transform duration-200 group-hover/qr:scale-105">
                     <QRCode

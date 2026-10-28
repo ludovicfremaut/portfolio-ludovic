@@ -13,6 +13,7 @@
 
 import { useContactForm } from "../../hooks/useContactForm";
 import { CheckIcon } from "../../assets/icons";
+import { Reveal } from "../ui/Reveal";
 
 /**
  * Section Contact avec formulaire
@@ -25,14 +26,16 @@ export function Contact({ isDark = true }) {
       isDark ? "bg-transparent" : "bg-white"
     }`}>
       <div className="max-w-xl mx-auto">
-        <h2 className={`text-center text-2xl font-bold uppercase tracking-[0.3em] mb-2 ${
-          isDark ? "text-white" : "text-slate-800"
-        }`}>
-          Contact
-        </h2>
-        <p className="text-center text-sm text-slate-500 mb-10">
-          Un projet, une idée ? Parlons-en.
-        </p>
+        <Reveal>
+          <h2 className={`text-center text-2xl font-bold uppercase tracking-[0.3em] mb-2 ${
+            isDark ? "text-white" : "text-slate-800"
+          }`}>
+            Contact
+          </h2>
+          <p className="text-center text-sm text-slate-500 mb-10">
+            Un projet, une idée ? Parlons-en.
+          </p>
+        </Reveal>
 
         {sent ? (
           <SuccessMessage isDark={isDark} />

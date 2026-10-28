@@ -129,6 +129,7 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
                 key={link.id}
                 href={`#${link.id}`}
                 onClick={() => onNavClick(link.label)}
+                aria-current={activeLink === link.label ? "true" : undefined}
                 className={`text-xs font-medium tracking-[0.15em] transition-colors ${
                   activeLink === link.label
                     ? isDark ? "text-white" : "text-slate-900"
@@ -197,6 +198,7 @@ export function Navbar({ activeLink, menuOpen, onNavClick, onToggleMenu, isDark,
                 key={link.id}
                 href={`#${link.id}`}
                 onClick={() => onNavClick(link.label)}
+                aria-current={activeLink === link.label ? "true" : undefined}
                 className={`text-sm font-medium tracking-widest ${
                   activeLink === link.label 
                     ? isDark ? "text-white" : "text-slate-900"
