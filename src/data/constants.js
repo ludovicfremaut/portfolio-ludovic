@@ -31,10 +31,9 @@ export const HERO_IMAGES = {
 
 /** Ce que je fabrique : phrases qui défilent sous le titre du Hero */
 export const HERO_ROTATING_WORDS = [
-  "des sites pour les artisans de la Somme",
+  "des sites pour les artisans et commerces",
   "des applications mobiles",
-  "des agents IA qui travaillent avec vous",
-  "des outils qui font gagner du temps",
+  "des agents IA",
 ];
 
 // LIENS EXTERNES

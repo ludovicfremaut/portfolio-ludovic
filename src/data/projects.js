@@ -29,7 +29,7 @@ export const PROJECTS = [
     previewPosition: "left top",
     url: "https://letempsdunsite.fr",
     links: [
-      { label: "Démo Boulangerie Martin", href: "https://letempsdunsite.fr/demos/boulangerie-martin/" },
+      { label: "Site de démonstration (boulangerie fictive)", href: "https://letempsdunsite.fr/demos/boulangerie-martin/" },
       { label: "Diagnostic de visibilité", href: "https://letempsdunsite.fr/diagnostic/" },
     ],
     categories: ["web"],
@@ -96,7 +96,7 @@ export const PROJECTS = [
     desc: "Tableau de bord administrateur d'une plateforme de réductions pour les commerçants de La Réunion.",
     longDesc: "Stage mené à distance, à 9 000 km, pour une plateforme coopérative de réductions destinée aux commerçants de l'île de La Réunion. J'ai construit le tableau de bord administrateur de bout en bout, avec l'authentification et la gestion des rôles utilisateurs sur Supabase et PostgreSQL, en méthode agile avec revues de code et en autonomie complète.",
     preview: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80",
-    categories: ["apps", "equipe"],
+    categories: ["apps"],
   },
   {
     title: "SkillSwap",

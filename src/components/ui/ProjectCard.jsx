@@ -96,12 +96,9 @@ export function ProjectCard({ title, tech, desc, preview, previewPosition = "cen
         }`} />
         {url && (
           <span className={`absolute top-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm ${
-            isDark ? "bg-black/60 text-emerald-300" : "bg-white/90 text-emerald-700"
+            isDark ? "bg-black/85 text-emerald-300" : "bg-white text-emerald-700"
           }`}>
-            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
-            </span>
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
             En ligne
           </span>
         )}
@@ -140,7 +137,7 @@ export function ProjectCard({ title, tech, desc, preview, previewPosition = "cen
         <span className={`mt-auto pt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest transition-colors ${
           isActive
             ? isDark ? "text-cyan-300" : "text-violet-700"
-            : isDark ? "text-slate-500 group-hover:text-cyan-300" : "text-slate-400 group-hover:text-violet-700"
+            : isDark ? "text-slate-400 group-hover:text-cyan-300" : "text-slate-600 group-hover:text-violet-700"
         }`}>
           {isActive ? "Détail ouvert" : "Voir le détail"}
           <span aria-hidden="true" className={`transition-transform duration-300 ${isActive ? "rotate-90" : "group-hover:translate-x-1"}`}>→</span>

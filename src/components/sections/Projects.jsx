@@ -8,12 +8,13 @@
  *     - sur mobile : directement en dessous de la card cliquée
  *     - sur desktop : sous toute la grille, pleine largeur, et la page défile jusqu'à elle
  *   (une seule vue détaillée est rendue à la fois, selon la largeur d'écran)
- *   Échap ou le bouton « Fermer » referme la vue détaillée et rend le focus à la carte.
+ *   Échap (focus dans la section) ou le bouton « Fermer » referme la vue détaillée
+ *   et rend le focus à la carte.
  * - Un bouton "Voir plus" révèle progressivement les projets par paquets de 3.
  * Supporte light/dark mode.
  */
 
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ProjectCard, ProjectCardExpanded } from "../ui/ProjectCard";
 import { Reveal } from "../ui/Reveal";
 import { PROJECTS, PROJECT_FILTERS } from "../../data/projects";
@@ -49,6 +50,7 @@ export function Projects({ isDark = true }) {
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
   const desktopPanelRef = useRef(null);
   const cardRefs = useRef({});
+  const sectionRef = useRef(null);
   const isDesktop = useIsDesktop();
 
   const filteredProjects = useMemo(() => filterProjects(filter), [filter]);
@@ -60,11 +62,13 @@ export function Projects({ isDark = true }) {
     setActiveTitle((current) => (current === title ? null : title));
   };
 
-  const handleClose = () => {
-    const title = activeTitle;
+  // Ferme le détail ; rend le focus à la carte seulement s'il était dans la section
+  const handleClose = useCallback(() => {
+    const focusInSection = sectionRef.current?.contains(document.activeElement);
+    const card = cardRefs.current[activeTitle];
     setActiveTitle(null);
-    cardRefs.current[title]?.focus();
-  };
+    if (focusInSection) card?.focus();
+  }, [activeTitle]);
 
   const handleFilter = (id) => {
     setFilter(id);
@@ -85,18 +89,21 @@ export function Projects({ isDark = true }) {
     panel.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
   }, [activeProject, isDesktop]);
 
-  // Échap referme la vue détaillée
+  // Échap referme la vue détaillée, seulement quand le focus est dans la section Projets
+  // (pas pendant la saisie du formulaire de contact ni dans une modale ou un menu)
   useEffect(() => {
     if (!activeTitle) return;
     const onKey = (e) => {
-      if (e.key === "Escape") handleClose();
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      if (!sectionRef.current?.contains(document.activeElement)) return;
+      handleClose();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  });
+  }, [activeTitle, handleClose]);
 
   return (
-    <section id="projets" className={`py-20 px-6 transition-colors duration-300 ${
+    <section id="projets" ref={sectionRef} className={`py-20 px-6 transition-colors duration-300 ${
       isDark ? "bg-transparent" : "bg-slate-100"
     }`}>
       <div className="max-w-5xl mx-auto">
@@ -131,9 +138,10 @@ export function Projects({ isDark = true }) {
                         : "border-slate-300 text-slate-600 hover:border-slate-500 hover:text-slate-900"
                   }`}
                 >
-                  {label}
-                  <span className={`text-[10px] tabular-nums ${selected ? "opacity-80" : "opacity-60"}`}>
+                  {label}{" "}
+                  <span className="text-[10px] tabular-nums">
                     {count}
+                    <span className="sr-only">{count > 1 ? " projets" : " projet"}</span>
                   </span>
                 </button>
               );
@@ -155,7 +163,7 @@ export function Projects({ isDark = true }) {
                     type="button"
                     onClick={() => handleToggle(project.title)}
                     aria-expanded={isActive}
-                    aria-controls={panelId}
+                    aria-controls={isActive ? panelId : undefined}
                     className={`text-left w-full h-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded-xl ${
                       isDimmed ? "md:opacity-40" : "opacity-100"
                     }`}
@@ -166,7 +174,7 @@ export function Projects({ isDark = true }) {
 
                 {/* Mobile : vue détaillée sous la card cliquée */}
                 {isActive && !isDesktop && (
-                  <div id={panelId}>
+                  <div id={panelId} className="sm:col-span-2">
                     <ProjectCardExpanded {...project} isDark={isDark} onClose={handleClose} />
                   </div>
                 )}

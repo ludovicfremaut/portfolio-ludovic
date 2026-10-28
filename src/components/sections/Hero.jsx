@@ -7,7 +7,7 @@
  * Layout: 1/2 gauche (image code) + 1/2 droite (image bureau)
  * Le texte est positionné à droite par-dessus les deux images.
  * Sous le titre, une phrase « Je conçois … » fait défiler ce que je fabrique,
- * un seul tour puis elle s'arrête sur la première phrase. Pas de défilement si
+ * un seul tour de moins de 5 s (WCAG 2.2.2) puis elle s'arrête sur la première phrase. Pas de défilement si
  * l'utilisateur a demandé moins d'animations. Les lecteurs d'écran lisent la
  * liste complète une fois.
  * Un indicateur en bas invite à faire défiler la page.
@@ -16,7 +16,7 @@
 import { useEffect, useState } from "react";
 import { HERO_IMAGES, HERO_ROTATING_WORDS, PERSONAL_INFO } from "../../data/constants";
 
-const ROTATE_EVERY_MS = 2800;
+const ROTATE_EVERY_MS = 1500;
 
 /** Phrase qui change toutes les ROTATE_EVERY_MS millisecondes, le temps d'un tour */
 function RotatingWords({ isDark }) {
@@ -132,7 +132,7 @@ export function Hero({ isDark = true }) {
         href="#a-propos"
         aria-label="Faire défiler vers la section À propos"
         className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.3em] transition-colors ${
-          isDark ? "text-slate-500 hover:text-white" : "text-slate-500 hover:text-slate-900"
+          isDark ? "text-slate-400 hover:text-white" : "text-slate-600 hover:text-slate-900"
         }`}
       >
         <span aria-hidden="true">Défiler</span>

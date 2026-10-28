@@ -71,7 +71,7 @@ html {
 }
 
 .animate-scroll-hint {
-  animation: scroll-hint 1.8s ease-in-out infinite;
+  animation: scroll-hint 1.8s ease-in-out 2;
 }
 
 /* Moins d'animations si l'utilisateur l'a demandé */
