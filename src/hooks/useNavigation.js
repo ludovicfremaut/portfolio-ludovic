@@ -21,13 +21,14 @@ const SECTION_IDS = NAV_LINKS.filter((link) => link.id !== "cv").map((link) => l
 /**
  * Hook pour gérer la navigation du portfolio
  * @param {string} initialLink - Lien actif initial (default: "ACCUEIL")
+ * @param {string} path - Page courante : le suivi des sections repart à chaque changement de page
  * @returns {Object} État et fonctions de navigation
  */
-export function useNavigation(initialLink = "ACCUEIL") {
+export function useNavigation(initialLink = "ACCUEIL", path = "/") {
   const [menuOpen, setMenuOpen] = useState(false);
   const initialId = NAV_LINKS.find((l) => l.label === initialLink)?.id ?? SECTION_IDS[0];
   // Section visible : suivie au défilement, forcée au clic sur un lien
-  const [visibleSection, setVisibleSection] = useScrollSpy(SECTION_IDS, initialId);
+  const [visibleSection, setVisibleSection] = useScrollSpy(SECTION_IDS, initialId, path);
   const activeLink = NAV_LINKS.find((l) => l.id === visibleSection)?.label ?? initialLink;
 
   /**

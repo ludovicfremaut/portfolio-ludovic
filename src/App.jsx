@@ -9,7 +9,12 @@
  * - Les composants sont organisés par type (layout, sections, ui)
  * - La logique réutilisable est dans /hooks
  * 
- * Structure de la page:
+ * Pages (routeur léger, voir router.js) :
+ * - "/" : la page d'accueil ci-dessous
+ * - "/projets/:slug" : la page d'un projet (transition animée depuis sa carte)
+ * - toute autre adresse : retour à l'accueil
+ *
+ * Structure de la page d'accueil:
  * 1. Navbar (fixe en haut)
  * 2. Hero (présentation avec fond split)
  * 3. About (timeline du parcours)
@@ -20,12 +25,32 @@
 
 import { Navbar, Footer, Hero, About, Projects, Contact } from "./components";
 import { useNavigation, useTheme } from "./hooks";
+import { ProjectPage } from "./components/pages/ProjectPage";
+import { Bot } from "./components/ui/Bot";
+import { ScrollProgress } from "./components/ui/ScrollProgress";
+import { findProject } from "./data/projects";
+import { useEffect } from "react";
+import { matchProject, redirect, scrollToInitialHash, usePath } from "./router";
 
 /**
  * Composant principal de l'application
  */
 export default function App() {
-  const { activeLink, menuOpen, handleNav, toggleMenu } = useNavigation();
+  const path = usePath();
+  const slug = matchProject(path);
+  const project = findProject(slug);
+  const unknownProject = Boolean(slug) && !project;
+
+  // Adresse de projet inconnue : retour à l'accueil (pas de page vide à cette adresse)
+  useEffect(() => {
+    if (unknownProject) redirect("/");
+  }, [unknownProject]);
+
+  // Ouverture directe d'une adresse avec ancre (ex. /#contact)
+  useEffect(() => {
+    scrollToInitialHash();
+  }, []);
+  const { activeLink, menuOpen, handleNav, toggleMenu } = useNavigation("ACCUEIL", path);
   const { isDark, toggleTheme } = useTheme();
 
   return (
@@ -44,14 +69,24 @@ export default function App() {
         onToggleTheme={toggleTheme}
       />
 
-      {/* Sections */}
-      <Hero isDark={isDark} />
-      <About isDark={isDark} />
-      <Projects isDark={isDark} />
-      <Contact isDark={isDark} />
+      <ScrollProgress isDark={isDark} />
+
+      {project ? (
+        <ProjectPage key={project.slug} project={project} isDark={isDark} />
+      ) : (
+        <main>
+          <Hero isDark={isDark} />
+          <About isDark={isDark} />
+          <Projects isDark={isDark} />
+          <Contact isDark={isDark} />
+        </main>
+      )}
 
       {/* Footer */}
       <Footer isDark={isDark} />
+
+      {/* Petit robot qui accompagne la visite */}
+      <Bot isDark={isDark} isHome={!project} />
     </div>
   );
 }

@@ -4,6 +4,16 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Fond du document selon le thème (visible pendant les changements de page) */
+html.dark {
+  background-color: #0d0d14;
+  color-scheme: dark;
+}
+html.light {
+  background-color: #f1f5f9;
+  color-scheme: light;
+}
+
 /* Animation d'expansion de la carte projet au hover */
 @keyframes card-expand {
   from {
@@ -90,4 +100,123 @@ html {
   .animate-scroll-hint {
     animation: none;
   }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHANGEMENTS DE PAGE (View Transitions, voir router.js)
+   La page sortante glisse et s'efface, la nouvelle arrive du côté opposé.
+   L'image d'un projet passe de sa carte à la page (nom « projet-<slug> »).
+   La navbar, la jauge et Boulon restent en place.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.site-navbar {
+  view-transition-name: navbar;
+}
+
+@keyframes vt-out-left { to { opacity: 0; transform: translateX(-48px); } }
+@keyframes vt-in-right { from { opacity: 0; transform: translateX(48px); } }
+@keyframes vt-out-right { to { opacity: 0; transform: translateX(48px); } }
+@keyframes vt-in-left { from { opacity: 0; transform: translateX(-48px); } }
+
+::view-transition-old(root) {
+  animation: vt-out-left 0.32s cubic-bezier(0.4, 0, 1, 1) both;
+}
+::view-transition-new(root) {
+  animation: vt-in-right 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+:root[data-nav-direction="back"]::view-transition-old(root) {
+  animation-name: vt-out-right;
+}
+:root[data-nav-direction="back"]::view-transition-new(root) {
+  animation-name: vt-in-left;
+}
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Entrée de la page projet : le texte suit l'image */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.project-page-body {
+  animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+/* Hero : la transmission apparaît en même temps qu'elle démarre */
+@keyframes transmission-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+.hero-transmission {
+  animation: transmission-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BOULON (components/ui/Bot.jsx)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@keyframes boulon-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+.boulon-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  /* Quelques clignements puis plus rien (pas d'animation sans fin, WCAG 2.2.2) */
+  animation: boulon-blink 4s ease-in-out 3;
+}
+
+@keyframes boulon-spin { to { transform: rotate(360deg); } }
+.boulon-ear-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: boulon-spin 1.6s linear infinite;
+}
+
+@keyframes boulon-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+.boulon-panel {
+  transform-origin: bottom right;
+  animation: boulon-pop 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.boulon-teaser {
+  transform-origin: bottom right;
+  animation: boulon-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.boulon-msg {
+  animation: boulon-pop 0.25s ease-out both;
+}
+
+@keyframes boulon-dot {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+.boulon-dot {
+  animation: boulon-dot 0.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  .project-page-body,
+  .hero-transmission,
+  .boulon-eye,
+  .boulon-ear-spin,
+  .boulon-panel,
+  .boulon-teaser,
+  .boulon-msg,
+  .boulon-dot {
+    animation: none;
+  }
+}
+
+/* Cibles de focus posées par le routeur (titres, sections) : pas de cadre visible */
+[tabindex="-1"]:focus {
+  outline: none;
 }
