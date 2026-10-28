@@ -107,15 +107,6 @@ export const PROJECTS = [
     preview: "https://media.istockphoto.com/id/1249140513/fr/photo/idée-parfaite.jpg?s=612x612&w=is&k=20&c=vSbGw2V3MsdtlfQS1VGrTbSF8Ezj5UJD6GVaIuwUBhY=",
     categories: ["apps", "equipe"],
   },
-  {
-    title: "AuditSense (SaaS)",
-    tech: ["Web", "Accessibilité", "RGPD", "Conception"],
-    tags: ["Next.js", "TypeScript", "Accessibilité", "RGPD", "SaaS", "Puppeteer"],
-    desc: "Plateforme d'audit web technique.",
-    longDesc: "Plateforme d'audit web technique qui va au-delà des scores automatiques. Analyse approfondie de l'accessibilité (WCAG), conformité RGPD, performance et SEO. Interface Next.js/TypeScript avec rapports détaillés, suivi historique des scores et recommandations personnalisées. Utilisation de Puppeteer pour le crawling automatisé.",
-    preview: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=400&q=80",
-    categories: ["apps"],
-  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
